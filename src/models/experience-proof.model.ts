@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {Experience, ExperienceWithRelations} from './experience.model';
 
 @model()
 export class ExperienceProof extends Entity {
@@ -34,6 +35,8 @@ export class ExperienceProof extends Entity {
   })
   surveyAnswers?: string;
 
+  @belongsTo(() => Experience)
+  experienceId: number;
 
   constructor(data?: Partial<ExperienceProof>) {
     super(data);
@@ -42,6 +45,7 @@ export class ExperienceProof extends Entity {
 
 export interface ExperienceProofRelations {
   // describe navigational properties here
+  experience?: ExperienceWithRelations;
 }
 
 export type ExperienceProofWithRelations = ExperienceProof & ExperienceProofRelations;

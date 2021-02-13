@@ -1,4 +1,7 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, hasMany, hasOne, model, property} from '@loopback/repository';
+import {Experience, ExperienceWithRelations} from './experience.model';
+import {Role, RoleWithRelations} from './role.model';
+import {Status, StatusWithRelations} from './status.model';
 
 @model()
 export class User extends Entity {
@@ -59,6 +62,14 @@ export class User extends Entity {
   })
   walletAddress?: string;
 
+  @hasMany(() => Experience)
+  experiences: Experience[];
+
+  @hasOne(() => Role)
+  role: Role;
+
+  @hasOne(() => Status)
+  status: Status;
 
   constructor(data?: Partial<User>) {
     super(data);
@@ -67,6 +78,9 @@ export class User extends Entity {
 
 export interface UserRelations {
   // describe navigational properties here
+  experiences?: ExperienceWithRelations[];
+  role?: RoleWithRelations;
+  status?: StatusWithRelations;
 }
 
 export type UserWithRelations = User & UserRelations;

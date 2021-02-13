@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {ExperienceWithRelations, Experience} from './experience.model';
 
 @model()
 export class Wine extends Entity {
@@ -35,6 +36,8 @@ export class Wine extends Entity {
   })
   tokenValue?: number;
 
+  @belongsTo(() => Experience)
+  experienceId: number;
 
   constructor(data?: Partial<Wine>) {
     super(data);
@@ -43,6 +46,7 @@ export class Wine extends Entity {
 
 export interface WineRelations {
   // describe navigational properties here
+  experience?: ExperienceWithRelations;
 }
 
 export type WineWithRelations = Wine & WineRelations;
