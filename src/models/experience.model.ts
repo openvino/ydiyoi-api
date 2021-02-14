@@ -1,6 +1,5 @@
-import {belongsTo, Entity, hasMany, hasOne, model, property} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {ExperienceProof, ExperienceProofWithRelations} from './experience-proof.model';
-import {Status, StatusWithRelations} from './status.model';
 import {User, UserWithRelations} from './user.model';
 import {Wine, WineWithRelations} from './wine.model';
 
@@ -32,8 +31,11 @@ export class Experience extends Entity {
   @hasMany(() => Wine)
   wines: Wine[];
 
-  @hasOne(() => Status)
-  status: Status;
+  @property({
+    type: 'number',
+    required: true,
+  })
+  statusId: number;
 
   constructor(data?: Partial<Experience>) {
     super(data);
@@ -43,7 +45,6 @@ export class Experience extends Entity {
 export interface ExperienceRelations {
   // describe navigational properties here
   user?: UserWithRelations;
-  status?: StatusWithRelations;
   experienceProofs?: ExperienceProofWithRelations[];
   wines?: WineWithRelations[];
 }

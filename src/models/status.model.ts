@@ -20,16 +20,6 @@ export class Status extends Entity {
   })
   description?: string;
 
-  @property({
-    type: 'number',
-  })
-  userId?: number;
-
-  @property({
-    type: 'number',
-  })
-  experienceId?: number;
-
   constructor(data?: Partial<Status>) {
     super(data);
   }
