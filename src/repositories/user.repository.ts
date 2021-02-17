@@ -4,6 +4,11 @@ import {DbDataSource} from '../datasources';
 import {Experience, User, UserRelations} from '../models';
 import {ExperienceRepository} from './experience.repository';
 
+export type Credentials = {
+  email: string;
+  password: string;
+}
+
 export class UserRepository extends DefaultCrudRepository<
   User,
   typeof User.prototype.id,

@@ -61,6 +61,10 @@ npm run lint:fix
 - `npm run docker:build`: Build a Docker image for this application
 - `npm run docker:run`: Run this application inside a Docker container
 
+## JWT authentication
+
+[Inspired by this repository](https://github.com/HrithikMittal/Loopback4-auth)
+
 ## Tests
 
 ```sh
