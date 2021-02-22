@@ -42,7 +42,7 @@ To force a full build by cleaning up cached artifacts:
 npm run rebuild
 ```
 
-To create foreing keys and insert test data en DB execute
+To create foreing keys and insert test data en DB execute:
 
 ```sh
 postmigratescript.sql
