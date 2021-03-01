@@ -110,7 +110,7 @@ npm run migrate
 
 ## What's next
 
-Docker ready (WIP)
+...
 
 
 
