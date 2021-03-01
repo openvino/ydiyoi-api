@@ -77,6 +77,37 @@ npm run lint:fix
 npm test
 ```
 
+## Docker
+
+
+After making changes to the project, generate docker image
+
+```sh
+npm run docker:build
+```
+
+To test the app in its own container
+
+```sh
+npm run docker:run
+```
+
+Start the containers defined in docker-compose.yml file
+
+```sh
+docker-compose build
+docker-compose up -d
+```
+
+If necessary, access DB container and migrate database
+
+```sh
+docker exec -it (container_id) sh
+npm run build
+npm run migrate
+```
+
+
 ## What's next
 
 Docker ready (WIP)
