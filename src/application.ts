@@ -79,7 +79,7 @@ export class YdiYoiApplication extends BootMixin(
     this.api({
       openapi: '3.0.0',
       info: {
-        title: 'test application',
+        title: 'YDI-YOI API',
         version: '1.0.0',
       },
       paths: {},
