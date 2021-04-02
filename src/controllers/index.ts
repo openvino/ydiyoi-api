@@ -12,3 +12,6 @@ export * from './user.controller';
 export * from './wine-experience.controller';
 export * from './wine.controller';
 
+export * from './experience-proof-survey.controller';
+export * from './experience-proof-experience-proof-survey.controller';
+export * from './experience-proof-survey-experience-proof.controller';

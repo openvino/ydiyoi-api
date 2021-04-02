@@ -28,8 +28,8 @@ INSERT INTO public.experience (xpdate,xplocation,userid,statusid) VALUES
 	 ('2021-02-17 23:05:43.827-03','Mendoza',1,2);
 
 --experienceproof
-INSERT INTO public.experienceproof (photo,"comment",surveylink,surveyquestions,surveyanswers,experienceid) VALUES
-	 ('url/photoid','Primera experiencia','url/surveyid',NULL,NULL,1);
+INSERT INTO public.experienceproof (photo,"comment",experienceid) VALUES
+	 ('url/photoid','Primera experiencia',1);
 
 -- role
 INSERT INTO public."role" ("name",description) VALUES
