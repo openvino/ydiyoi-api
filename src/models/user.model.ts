@@ -26,7 +26,7 @@ export class User extends Entity {
     type: 'string',
     required: true,
   })
-  userName: string;
+  telegramId: string;
 
   @property({
     type: 'date',
