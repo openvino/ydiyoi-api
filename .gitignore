@@ -65,3 +65,6 @@ typings/
 
 # postgres db data directory
 pgdata
+
+#uploaded files directory
+.sandbox

@@ -3,11 +3,13 @@ import {BindingKey} from '@loopback/core';
 import {User} from './models';
 import {Credentials} from './repositories/user.repository';
 import {PasswordHasher} from './services/hash.password';
+import {FileUploadHandler} from './types';
 
 export namespace TokenServiceConstants {
   export const TOKEN_SECRET_VALUE = '138asda8213';
   export const TOKEN_EXPIRES_IN_VALUE = '7h';
 }
+
 export namespace TokenServiceBindings {
   export const TOKEN_SECRET = BindingKey.create<string>(
     'authentication.jwt.secret',
@@ -32,3 +34,15 @@ export namespace UserServiceBindings {
     'services.user.service',
   );
 }
+
+/**
+ * Binding key for the file upload service
+ */
+export const FILE_UPLOAD_SERVICE = BindingKey.create<FileUploadHandler>(
+  'services.FileUpload',
+);
+
+/**
+ * Binding key for the storage directory
+ */
+export const STORAGE_DIRECTORY = BindingKey.create<string>('storage.directory');

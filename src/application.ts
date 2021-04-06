@@ -11,14 +11,14 @@ import {
   RestExplorerComponent
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import multer from 'multer';
 import path from 'path';
 import {JWTStrategy} from './authentication-stratgies/jwt-stratgies';
-import {PasswordHasherBindings, TokenServiceBindings, TokenServiceConstants, UserServiceBindings} from './keys';
+import {FILE_UPLOAD_SERVICE, PasswordHasherBindings, STORAGE_DIRECTORY, TokenServiceBindings, TokenServiceConstants, UserServiceBindings} from './keys';
 import {MySequence} from './sequence';
 import {BcryptHasher} from './services/hash.password';
 import {JWTService} from './services/jwt-service';
 import {MyUserService} from './services/user-service';
-
 
 export {ApplicationConfig};
 
@@ -49,6 +49,9 @@ export class YdiYoiApplication extends BootMixin(
     });
     this.component(RestExplorerComponent);
 
+    // Configure file upload with multer options
+    this.configureFileUpload(options.fileStorageDirectory);
+
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
@@ -75,6 +78,7 @@ export class YdiYoiApplication extends BootMixin(
     this.bind(TokenServiceBindings.TOKEN_SECRET).to(TokenServiceConstants.TOKEN_SECRET_VALUE)
     this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to(TokenServiceConstants.TOKEN_EXPIRES_IN_VALUE);
   }
+
   addSecuritySpec(): void {
     this.api({
       openapi: '3.0.0',
@@ -93,4 +97,25 @@ export class YdiYoiApplication extends BootMixin(
       servers: [{url: '/'}],
     });
   }
+
+  /**
+ * Configure `multer` options for file upload
+ */
+  protected configureFileUpload(destination?: string) {
+    // Upload files to `dist/.sandbox` by default
+    destination = destination ?? path.join(__dirname, '../.sandbox');
+    this.bind(STORAGE_DIRECTORY).to(destination);
+    const multerOptions: multer.Options = {
+      storage: multer.diskStorage({
+        destination,
+        // Use the original file name as is
+        filename: (req, file, cb) => {
+          cb(null, file.originalname);
+        },
+      }),
+    };
+    // Configure the file upload service with multer options
+    this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
+  }
+
 }
