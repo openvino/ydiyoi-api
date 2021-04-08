@@ -26,26 +26,26 @@ export class ExperienceWineController {
     @repository(ExperienceRepository) protected experienceRepository: ExperienceRepository,
   ) { }
 
-  @get('/experiences/{id}/wines', {
+  @get('/experiences/{id}/wine', {
     responses: {
       '200': {
-        description: 'Array of Experience has many Wine',
+        description: 'Experience has one Wine',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Wine)},
+            schema: getModelSchemaRef(Wine),
           },
         },
       },
     },
   })
-  async find(
+  async get(
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Wine>,
-  ): Promise<Wine[]> {
-    return this.experienceRepository.wines(id).find(filter);
+  ): Promise<Wine> {
+    return this.experienceRepository.wine(id).get(filter);
   }
 
-  @post('/experiences/{id}/wines', {
+  @post('/experiences/{id}/wine', {
     responses: {
       '200': {
         description: 'Experience model instance',
@@ -67,10 +67,10 @@ export class ExperienceWineController {
       },
     }) wine: Omit<Wine, 'id'>,
   ): Promise<Wine> {
-    return this.experienceRepository.wines(id).create(wine);
+    return this.experienceRepository.wine(id).create(wine);
   }
 
-  @patch('/experiences/{id}/wines', {
+  @patch('/experiences/{id}/wine', {
     responses: {
       '200': {
         description: 'Experience.Wine PATCH success count',
@@ -90,10 +90,10 @@ export class ExperienceWineController {
     wine: Partial<Wine>,
     @param.query.object('where', getWhereSchemaFor(Wine)) where?: Where<Wine>,
   ): Promise<Count> {
-    return this.experienceRepository.wines(id).patch(wine, where);
+    return this.experienceRepository.wine(id).patch(wine, where);
   }
 
-  @del('/experiences/{id}/wines', {
+  @del('/experiences/{id}/wine', {
     responses: {
       '200': {
         description: 'Experience.Wine DELETE success count',
@@ -105,6 +105,6 @@ export class ExperienceWineController {
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Wine)) where?: Where<Wine>,
   ): Promise<Count> {
-    return this.experienceRepository.wines(id).delete(where);
+    return this.experienceRepository.wine(id).delete(where);
   }
 }

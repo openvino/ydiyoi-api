@@ -61,9 +61,6 @@ export class User extends Entity {
   })
   walletAddress?: string;
 
-  @hasMany(() => Experience)
-  experiences: Experience[];
-
   @property({
     type: 'number',
     required: true,
@@ -75,6 +72,9 @@ export class User extends Entity {
     required: true,
   })
   statusId: number;
+
+  @hasMany(() => Experience)
+  experiences: Experience[];
 
   constructor(data?: Partial<User>) {
     super(data);

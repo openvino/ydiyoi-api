@@ -1,8 +1,8 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
-import {ExperienceProof, ExperienceProofWithRelations} from './experience-proof.model';
+import {Experience} from './experience.model';
 
 @model()
-export class ExperienceProofSurvey extends Entity {
+export class ExperienceSurvey extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -40,18 +40,16 @@ export class ExperienceProofSurvey extends Entity {
   })
   answer3?: string;
 
-  @belongsTo(() => ExperienceProof)
-  experienceProofId: number;
+  @belongsTo(() => Experience)
+  experienceId: number;
 
-  constructor(data?: Partial<ExperienceProofSurvey>) {
+  constructor(data?: Partial<ExperienceSurvey>) {
     super(data);
   }
 }
 
-export interface ExperienceProofSurveyRelations {
+export interface ExperienceSurveyRelations {
   // describe navigational properties here
-  experienceProof?: ExperienceProofWithRelations;
-
 }
 
-export type ExperienceProofSurveyWithRelations = ExperienceProofSurvey & ExperienceProofSurveyRelations;
+export type ExperienceSurveyWithRelations = ExperienceSurvey & ExperienceSurveyRelations;

@@ -2,8 +2,9 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterBuilder,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -13,17 +14,17 @@ import {
   param,
   patch,
   post,
-  requestBody,
+  requestBody
 } from '@loopback/rest';
 import {
-  User,
-  Experience,
+  Experience, User
 } from '../models';
-import {UserRepository} from '../repositories';
+import {ExperienceRepository, UserRepository} from '../repositories';
 
 export class UserExperienceController {
   constructor(
     @repository(UserRepository) protected userRepository: UserRepository,
+    @repository(ExperienceRepository) public experienceRepository: ExperienceRepository,
   ) { }
 
   @get('/users/{id}/experiences', {
@@ -106,5 +107,42 @@ export class UserExperienceController {
     @param.query.object('where', getWhereSchemaFor(Experience)) where?: Where<Experience>,
   ): Promise<Count> {
     return this.userRepository.experiences(id).delete(where);
+  }
+
+  // Array of Experience detail
+  @get('/users/{id}/experiencesdetail', {
+    responses: {
+      '200': {
+        description: 'Array of Experience detail',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Experience)},
+          },
+        },
+      },
+    },
+  })
+  async findDetail(
+    @param.path.number('id') id: number,
+  ): Promise<Experience[]> {
+
+    // relation: Experience HasOne Wine
+    // fields returned: Experience.id, Experience.date, Experience.Status
+    // Wine.id, Wine.name, Wine.TokenSymbol, Wine.TokenValue,
+
+    const filterBuilder = new FilterBuilder<Experience>();
+    const filter = filterBuilder
+      .fields('id', 'date', 'statusId')
+      .include({
+        relation: 'wine', scope: {
+          fields: ['experienceId', 'name',
+            'tokenSymbol', 'tokenValue']
+        }
+      })
+      .where({userId: id})
+      .build();
+
+    return this.experienceRepository.find(filter);
+
   }
 }

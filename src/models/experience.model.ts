@@ -1,5 +1,5 @@
-import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
-import {ExperienceProof, ExperienceProofWithRelations} from './experience-proof.model';
+import {belongsTo, Entity, hasOne, model, property} from '@loopback/repository';
+import {ExperienceSurvey, ExperienceSurveyWithRelations} from './experience-survey.model';
 import {User, UserWithRelations} from './user.model';
 import {Wine, WineWithRelations} from './wine.model';
 
@@ -14,28 +14,34 @@ export class Experience extends Entity {
 
   @property({
     type: 'date',
+    required: true,
   })
-  xpDate?: string;
+  date: string;
 
   @property({
     type: 'string',
   })
-  xpLocation?: string;
+  location?: string;
 
-  @belongsTo(() => User)
-  userId: number;
-
-  @hasMany(() => ExperienceProof)
-  experienceProofs: ExperienceProof[];
-
-  @hasMany(() => Wine)
-  wines: Wine[];
+  @property({
+    type: 'string',
+  })
+  photoFileName?: string;
 
   @property({
     type: 'number',
     required: true,
   })
   statusId: number;
+
+  @belongsTo(() => User)
+  userId: number;
+
+  @hasOne(() => Wine)
+  wine: Wine;
+
+  @hasOne(() => ExperienceSurvey)
+  experienceSurvey: ExperienceSurvey;
 
   constructor(data?: Partial<Experience>) {
     super(data);
@@ -45,8 +51,8 @@ export class Experience extends Entity {
 export interface ExperienceRelations {
   // describe navigational properties here
   user?: UserWithRelations;
-  experienceProofs?: ExperienceProofWithRelations[];
-  wines?: WineWithRelations[];
+  experienceSurvey?: ExperienceSurveyWithRelations;
+  wine?: WineWithRelations;
 }
 
 export type ExperienceWithRelations = Experience & ExperienceRelations;

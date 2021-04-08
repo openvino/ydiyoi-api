@@ -1,5 +1,5 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {ExperienceWithRelations, Experience} from './experience.model';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {Experience, ExperienceWithRelations} from './experience.model';
 
 @model()
 export class Wine extends Entity {

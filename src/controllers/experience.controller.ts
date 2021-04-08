@@ -4,27 +4,23 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
+  del, get,
+  getModelSchemaRef, param, patch, post,
   put,
-  del,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import {Experience} from '../models';
+import {Experience, User} from '../models';
 import {ExperienceRepository} from '../repositories';
 
 export class ExperienceController {
   constructor(
     @repository(ExperienceRepository)
-    public experienceRepository : ExperienceRepository,
-  ) {}
+    public experienceRepository: ExperienceRepository,
+  ) { }
 
   @post('/experiences')
   @response(200, {
@@ -147,4 +143,24 @@ export class ExperienceController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.experienceRepository.deleteById(id);
   }
+
+  // moved her from experience-user.controller
+  @get('/experiences/{id}/user', {
+    responses: {
+      '200': {
+        description: 'User belonging to Experience',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(User)},
+          },
+        },
+      },
+    },
+  })
+  async getUser(
+    @param.path.number('id') id: typeof Experience.prototype.id,
+  ): Promise<User> {
+    return this.experienceRepository.user(id);
+  }
+
 }

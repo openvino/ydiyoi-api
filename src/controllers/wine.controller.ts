@@ -15,7 +15,7 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
-import {Wine} from '../models';
+import {Experience, Wine} from '../models';
 import {WineRepository} from '../repositories';
 
 export class WineController {
@@ -146,6 +146,24 @@ export class WineController {
     return this.wineRepository.findById(id, filter);
   }
 
+  // from wine-experience.controller
+  @get('/wines/{id}/experience', {
+    responses: {
+      '200': {
+        description: 'Experience belonging to Wine',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Experience)},
+          },
+        },
+      },
+    },
+  })
+  async getExperience(
+    @param.path.number('id') id: typeof Wine.prototype.id,
+  ): Promise<Experience> {
+    return this.wineRepository.experience(id);
+  }
 
   // get status by wine qr_id
   @get('/qrstatus/{qr_id}')
@@ -185,7 +203,7 @@ export class WineController {
       }
     }
 
-    const retVal = `{ id : ${xpStatus?.toString()} , allowClaim : ${allowClaim} }`;
+    const retVal = `{ statusId : ${xpStatus?.toString()} , allowClaim : ${allowClaim} }`;
 
     return retVal;
   }
