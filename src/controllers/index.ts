@@ -11,3 +11,4 @@ export * from './user-experience.controller';
 export * from './user.controller';
 export * from './wine.controller';
 
+export * from './survey-questions.controller';

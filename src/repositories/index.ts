@@ -5,3 +5,4 @@ export * from './wine.repository';
 
 export * from './experience.repository';
 export * from './experience-survey.repository';
+export * from './survey-questions.repository';

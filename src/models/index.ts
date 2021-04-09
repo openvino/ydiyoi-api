@@ -6,3 +6,4 @@ export * from './user.model';
 export * from './wine.model';
 
 
+export * from './survey-questions.model';
