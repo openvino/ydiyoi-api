@@ -34,6 +34,11 @@ export class Experience extends Entity {
   })
   statusId: number;
 
+  @property({
+    type: 'string',
+  })
+  qrValue?: string;
+
   @belongsTo(() => User)
   userId: number;
 

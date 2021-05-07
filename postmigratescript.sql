@@ -39,9 +39,10 @@ INSERT INTO public.status ("name",description) VALUES
 	 ('Rejected', 'Experience rejected by admin');
 
 -- experience (relation: user HasMany experience)
-INSERT INTO public.experience ("date",location,photofilename,statusid,userid) VALUES
-	 ('2021-02-17 00:00:00-03','Mendoza','photofilename1.png',2,2),
-	 ('2021-02-22 00:00:00-03','Mendoza','photofilename2.png',5,2);
+INSERT INTO public.experience ("date", "location", photofilename, statusid, qrvalue, userid)
+VALUES('', '', '', 0, '', 0);
+	 ('2021-02-17 00:00:00-03','Mendoza','photofilename1.png',5,'',2),
+	 ('2021-02-22 00:00:00-03','Mendoza','photofilename2.png',5,'',2);
 
 --experiencesurvey (relation: experience HasOne survey)
 INSERT INTO public.experiencesurvey (question1,answer1,question2,answer2,question3,answer3,experienceid) VALUES
@@ -53,10 +54,36 @@ INSERT INTO public."user" (firstname,lastname,telegramid,birthdate,email,address
 	 ('Luis','Videla','@luisvid','1973-08-23 00:00:00-03','luisvid@gmail.com','A Maure 234, Mendoza, Argentina','','$2a$10$tksmS972xKet9Vt5PVItp.hABtpnXBxOxKgaUc23jhK57QOgM28xK','',1,2);
 
 -- wine (relation: experience HasOne wine)
-INSERT INTO public.wine ("name",description,qrvalue,tokensymbol,tokenvalue,experienceid) VALUES
-	 ('MTB Malbec 2018','  MTB Malbec 2018',  'url/id_1','MTB',1,NULL),
-	 ('MTB Malbec 2018',  'MTB Malbec 2018',  'url/id_2','MTB',1,NULL),
-	 ('MTB Cabernet 2018','MTB Cabernet 2018','url/id_3','MTB',1,NULL),
-	 ('MTB Bonarda 2018', 'MTB Bonarda 2018', 'url/id_4','MTB',1,NULL),
-	 ('MTB Cabernet 2018','MTB Cabernet 2018','url/id_5','MTB',1,NULL),
-	 ('MTB Bonarda 2018', 'MTB Bonarda 2018', 'url/id_6','MTB',1,NULL),
+-- INSERT INTO public.wine ("name", description, bottleno, qrvalue, tokensymbol, tokenvalue, experienceid)
+-- VALUES('', '', 0, '', '', 0, 0);
+
+-- QR_ID initializer stored procedure
+
+-- Stored procedure  to initialize wine table
+CREATE OR REPLACE FUNCTION initialize_wine_qrid(pRecordsNo int, pTokenSymbol text)
+RETURNS boolean
+AS $$
+declare
+	ii integer := 1;
+begin
+	TRUNCATE TABLE wine;
+	FOR ii IN 1..pRecordsNo LOOP
+  		INSERT INTO public.wine (name, bottleno, qrvalue, tokensymbol, tokenvalue)
+  			VALUES('', ii, LPAD(ii::text, 5, '0') || '.' || upper(substr(md5(random()::text), 0, 6)),
+  					pTokenSymbol, 1);
+  	END LOOP;
+  	return true;
+end;
+$$
+LANGUAGE plpgsql;
+-- end Peocedure
+
+-- Execution
+select initialize_wine_qrid(16384, 'NFT');
+
+-- Wine name and description batch update
+UPDATE public.wine
+SET "name"='CABERNET MTB 2018', description='CABERNET MTB 2018'
+WHERE bottleno between 21 and 30;
+
+

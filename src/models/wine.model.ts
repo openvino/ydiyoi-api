@@ -22,6 +22,11 @@ export class Wine extends Entity {
   description?: string;
 
   @property({
+    type: 'number',
+  })
+  bottleNo?: number;
+
+  @property({
     type: 'string',
   })
   qrValue?: string;
