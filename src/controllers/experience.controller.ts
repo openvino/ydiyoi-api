@@ -2,6 +2,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterBuilder,
   FilterExcludingWhere,
   repository,
   Where
@@ -13,13 +14,15 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
-import {Experience, User} from '../models';
-import {ExperienceRepository} from '../repositories';
+import {Experience, User, Wine} from '../models';
+import {ExperienceRepository, WineRepository} from '../repositories';
 
 export class ExperienceController {
   constructor(
     @repository(ExperienceRepository)
     public experienceRepository: ExperienceRepository,
+    @repository(WineRepository)
+    public wineRepository: WineRepository,
   ) { }
 
   @post('/experiences')
@@ -40,7 +43,31 @@ export class ExperienceController {
     })
     experience: Omit<Experience, 'id'>,
   ): Promise<Experience> {
-    return this.experienceRepository.create(experience);
+    // create new experience and get the returning inserted object
+    const newExperience = await this.experienceRepository.create(experience);
+
+    //get qrvalue and new id
+    const newQrValue = experience.qrValue;
+    const newXpId = newExperience.id!;
+    // console.log(newExperience);
+
+    //Search for wine by the qr_id
+    const filterBuilder = new FilterBuilder<Wine>();
+    const filtr = filterBuilder
+      .where({qrValue: newQrValue})
+      .build();
+    let wine = await this.wineRepository.findOne(filtr);
+
+    // update wine with experience.id
+    if (wine != undefined) {
+      //TODO: check if the wine already have an experienceId
+      wine.experienceId = newXpId;
+      await this.wineRepository.update(wine);
+    } else {
+      //TODO: inform error if the wine is not found
+    }
+
+    return newExperience;
   }
 
   @get('/experiences/count')
