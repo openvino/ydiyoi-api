@@ -60,7 +60,8 @@ INSERT INTO public."user" (firstname,lastname,telegramid,birthdate,email,address
 -- QR_ID initializer stored procedure
 
 -- Stored procedure  to initialize wine table
-CREATE OR REPLACE FUNCTION initialize_wine_qrid(pRecordsNo int, pTokenSymbol text)
+-- QRValue = wineName.bottleno.AlfaRandom
+CREATE OR REPLACE FUNCTION initialize_wine_qrid(pRecordsNo int, pWineName text, pTokenSymbol text)
 RETURNS boolean
 AS $$
 declare
@@ -69,7 +70,8 @@ begin
 	TRUNCATE TABLE wine;
 	FOR ii IN 1..pRecordsNo LOOP
   		INSERT INTO public.wine (name, bottleno, qrvalue, tokensymbol, tokenvalue)
-  			VALUES('', ii, LPAD(ii::text, 5, '0') || '.' || upper(substr(md5(random()::text), 0, 6)),
+  			VALUES(pWineName, ii,
+  					pWineName || '.' || LPAD(ii::text, 5, '0') || '.' || upper(substr(md5(random()::text), 0, 6)),
   					pTokenSymbol, 1);
   	END LOOP;
   	return true;
@@ -79,11 +81,11 @@ LANGUAGE plpgsql;
 -- end Peocedure
 
 -- Execution
-select initialize_wine_qrid(16384, 'NFT');
+select initialize_wine_qrid(16384, 'MTB18', 'NFT');
 
 -- Wine name and description batch update
 UPDATE public.wine
-SET "name"='CABERNET MTB 2018', description='CABERNET MTB 2018'
-WHERE bottleno between 21 and 30;
+SET "name"='MTB 2018', description='Something about MTB 2018'
+WHERE bottleno between 1 and 500;
 
 
