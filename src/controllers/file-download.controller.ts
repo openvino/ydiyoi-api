@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {
   get,
@@ -10,12 +11,13 @@ import {
   oas,
   param,
   Response,
-  RestBindings,
+  RestBindings
 } from '@loopback/rest';
 import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
-import {STORAGE_DIRECTORY} from '../keys';
+import {STORAGE_DIRECTORY, TokenServiceBindings} from '../keys';
+import {JWTService} from '../services/jwt-service';
 
 const readdir = promisify(fs.readdir);
 
@@ -23,7 +25,16 @@ const readdir = promisify(fs.readdir);
  * A controller to handle file downloads using multipart/form-data media type
  */
 export class FileDownloadController {
-  constructor(@inject(STORAGE_DIRECTORY) private storageDirectory: string) {}
+  constructor(
+    @inject(STORAGE_DIRECTORY)
+    private storageDirectory: string,
+
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
+  ) { }
+
+  @authenticate("jwt")
   @get('/files', {
     responses: {
       200: {
@@ -47,6 +58,7 @@ export class FileDownloadController {
     return files;
   }
 
+  @authenticate("jwt")
   @get('/files/{filename}')
   @oas.response.file()
   downloadFile(

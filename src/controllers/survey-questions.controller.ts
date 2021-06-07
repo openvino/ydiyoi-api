@@ -1,31 +1,36 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
+  del, get,
+  getModelSchemaRef, param,
+  patch, post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {SurveyQuestions} from '../models';
 import {SurveyQuestionsRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
 
 export class SurveyQuestionsController {
   constructor(
     @repository(SurveyQuestionsRepository)
-    public surveyQuestionsRepository : SurveyQuestionsRepository,
-  ) {}
+    public surveyQuestionsRepository: SurveyQuestionsRepository,
 
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
+  ) { }
+
+  @authenticate("jwt")
   @post('/survey-questions')
   @response(200, {
     description: 'SurveyQuestions model instance',
@@ -47,6 +52,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.create(surveyQuestions);
   }
 
+  @authenticate("jwt")
   @get('/survey-questions/count')
   @response(200, {
     description: 'SurveyQuestions model count',
@@ -58,6 +64,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/survey-questions')
   @response(200, {
     description: 'Array of SurveyQuestions model instances',
@@ -76,6 +83,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/survey-questions')
   @response(200, {
     description: 'SurveyQuestions PATCH success count',
@@ -95,6 +103,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.updateAll(surveyQuestions, where);
   }
 
+  @authenticate("jwt")
   @get('/survey-questions/{id}')
   @response(200, {
     description: 'SurveyQuestions model instance',
@@ -111,6 +120,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.findById(id, filter);
   }
 
+  @authenticate("jwt")
   @patch('/survey-questions/{id}')
   @response(204, {
     description: 'SurveyQuestions PATCH success',
@@ -129,17 +139,19 @@ export class SurveyQuestionsController {
     await this.surveyQuestionsRepository.updateById(id, surveyQuestions);
   }
 
-  @put('/survey-questions/{id}')
-  @response(204, {
-    description: 'SurveyQuestions PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() surveyQuestions: SurveyQuestions,
-  ): Promise<void> {
-    await this.surveyQuestionsRepository.replaceById(id, surveyQuestions);
-  }
+  // @authenticate("jwt")
+  // @put('/survey-questions/{id}')
+  // @response(204, {
+  //   description: 'SurveyQuestions PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() surveyQuestions: SurveyQuestions,
+  // ): Promise<void> {
+  //   await this.surveyQuestionsRepository.replaceById(id, surveyQuestions);
+  // }
 
+  @authenticate("jwt")
   @del('/survey-questions/{id}')
   @response(204, {
     description: 'SurveyQuestions DELETE success',

@@ -13,7 +13,6 @@ import {
   del, get,
   getJsonSchemaRef, getModelSchemaRef, param,
   patch, post,
-  put,
   requestBody,
   response
 } from '@loopback/rest';
@@ -50,6 +49,7 @@ export class UserController {
 
   ) { }
 
+  @authenticate("jwt")
   @post('/users')
   @response(200, {
     description: 'User model instance',
@@ -71,6 +71,7 @@ export class UserController {
     return this.userRepository.create(user);
   }
 
+  @authenticate("jwt")
   @get('/users/count')
   @response(200, {
     description: 'User model count',
@@ -82,6 +83,7 @@ export class UserController {
     return this.userRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',
@@ -100,6 +102,7 @@ export class UserController {
     return this.userRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/users')
   @response(200, {
     description: 'User PATCH success count',
@@ -119,6 +122,7 @@ export class UserController {
     return this.userRepository.updateAll(user, where);
   }
 
+  @authenticate("jwt")
   @get('/users/{id}')
   @response(200, {
     description: 'User model instance',
@@ -135,6 +139,7 @@ export class UserController {
     return this.userRepository.findById(id, filter);
   }
 
+  @authenticate("jwt")
   @patch('/users/{id}')
   @response(204, {
     description: 'User PATCH success',
@@ -153,17 +158,19 @@ export class UserController {
     await this.userRepository.updateById(id, user);
   }
 
-  @put('/users/{id}')
-  @response(204, {
-    description: 'User PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() user: User,
-  ): Promise<void> {
-    await this.userRepository.replaceById(id, user);
-  }
+  // @authenticate("jwt")
+  // @put('/users/{id}')
+  // @response(204, {
+  //   description: 'User PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() user: User,
+  // ): Promise<void> {
+  //   await this.userRepository.replaceById(id, user);
+  // }
 
+  @authenticate("jwt")
   @del('/users/{id}')
   @response(204, {
     description: 'User DELETE success',

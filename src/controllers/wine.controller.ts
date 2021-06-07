@@ -1,3 +1,5 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -11,19 +13,26 @@ import {
   del, get,
   getModelSchemaRef, param,
   patch, post,
-  put,
   requestBody,
   response
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {Experience, Wine} from '../models';
 import {WineRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
+
 
 export class WineController {
   constructor(
     @repository(WineRepository)
     public wineRepository: WineRepository,
+
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
 
+  @authenticate("jwt")
   @post('/wines')
   @response(200, {
     description: 'Wine model instance',
@@ -45,6 +54,7 @@ export class WineController {
     return this.wineRepository.create(wine);
   }
 
+  @authenticate("jwt")
   @get('/wines/count')
   @response(200, {
     description: 'Wine model count',
@@ -56,6 +66,7 @@ export class WineController {
     return this.wineRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/wines')
   @response(200, {
     description: 'Array of Wine model instances',
@@ -74,6 +85,7 @@ export class WineController {
     return this.wineRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/wines')
   @response(200, {
     description: 'Wine PATCH success count',
@@ -93,6 +105,7 @@ export class WineController {
     return this.wineRepository.updateAll(wine, where);
   }
 
+  @authenticate("jwt")
   @patch('/wines/{id}')
   @response(204, {
     description: 'Wine PATCH success',
@@ -111,17 +124,19 @@ export class WineController {
     await this.wineRepository.updateById(id, wine);
   }
 
-  @put('/wines/{id}')
-  @response(204, {
-    description: 'Wine PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() wine: Wine,
-  ): Promise<void> {
-    await this.wineRepository.replaceById(id, wine);
-  }
+  // @authenticate("jwt")
+  // @put('/wines/{id}')
+  // @response(204, {
+  //   description: 'Wine PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() wine: Wine,
+  // ): Promise<void> {
+  //   await this.wineRepository.replaceById(id, wine);
+  // }
 
+  @authenticate("jwt")
   @del('/wines/{id}')
   @response(204, {
     description: 'Wine DELETE success',
@@ -147,6 +162,7 @@ export class WineController {
   }
 
   // from wine-experience.controller
+  @authenticate("jwt")
   @get('/wines/{id}/experience', {
     responses: {
       '200': {

@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {
   post,
@@ -11,8 +12,10 @@ import {
   Response,
   RestBindings
 } from '@loopback/rest';
-import {FILE_UPLOAD_SERVICE} from '../keys';
+import {FILE_UPLOAD_SERVICE, TokenServiceBindings} from '../keys';
+import {JWTService} from '../services/jwt-service';
 import {FileUploadHandler} from '../types';
+
 
 /**
  * A controller to handle file uploads using multipart/form-data media type
@@ -23,8 +26,15 @@ export class FileUploadController {
    * @param handler - Inject an express request handler to deal with the request
    */
   constructor(
-    @inject(FILE_UPLOAD_SERVICE) private handler: FileUploadHandler,
+    @inject(FILE_UPLOAD_SERVICE)
+    private handler: FileUploadHandler,
+
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
+
+  @authenticate("jwt")
   @post('/files', {
     responses: {
       200: {

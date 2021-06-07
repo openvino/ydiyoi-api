@@ -1,3 +1,5 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -10,21 +12,29 @@ import {
 import {
   del, get,
   getModelSchemaRef, param, patch, post,
-  put,
   requestBody,
   response
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {Experience, User, Wine} from '../models';
 import {ExperienceRepository, WineRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
+
 
 export class ExperienceController {
   constructor(
     @repository(ExperienceRepository)
     public experienceRepository: ExperienceRepository,
+
     @repository(WineRepository)
     public wineRepository: WineRepository,
+
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
 
+  @authenticate("jwt")
   @post('/experiences')
   @response(200, {
     description: 'Experience model instance',
@@ -70,6 +80,7 @@ export class ExperienceController {
     return newExperience;
   }
 
+  @authenticate("jwt")
   @get('/experiences/count')
   @response(200, {
     description: 'Experience model count',
@@ -81,6 +92,7 @@ export class ExperienceController {
     return this.experienceRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/experiences')
   @response(200, {
     description: 'Array of Experience model instances',
@@ -99,6 +111,7 @@ export class ExperienceController {
     return this.experienceRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/experiences')
   @response(200, {
     description: 'Experience PATCH success count',
@@ -118,6 +131,7 @@ export class ExperienceController {
     return this.experienceRepository.updateAll(experience, where);
   }
 
+  @authenticate("jwt")
   @get('/experiences/{id}')
   @response(200, {
     description: 'Experience model instance',
@@ -134,6 +148,7 @@ export class ExperienceController {
     return this.experienceRepository.findById(id, filter);
   }
 
+  @authenticate("jwt")
   @patch('/experiences/{id}')
   @response(204, {
     description: 'Experience PATCH success',
@@ -152,17 +167,19 @@ export class ExperienceController {
     await this.experienceRepository.updateById(id, experience);
   }
 
-  @put('/experiences/{id}')
-  @response(204, {
-    description: 'Experience PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() experience: Experience,
-  ): Promise<void> {
-    await this.experienceRepository.replaceById(id, experience);
-  }
+  // @authenticate("jwt")
+  // @put('/experiences/{id}')
+  // @response(204, {
+  //   description: 'Experience PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() experience: Experience,
+  // ): Promise<void> {
+  //   await this.experienceRepository.replaceById(id, experience);
+  // }
 
+  @authenticate("jwt")
   @del('/experiences/{id}')
   @response(204, {
     description: 'Experience DELETE success',
@@ -172,6 +189,7 @@ export class ExperienceController {
   }
 
   // moved her from experience-user.controller
+  @authenticate("jwt")
   @get('/experiences/{id}/user', {
     responses: {
       '200': {

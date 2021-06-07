@@ -1,9 +1,11 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -13,19 +15,28 @@ import {
   param,
   patch,
   post,
-  requestBody,
+  requestBody
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {
   Experience,
-  ExperienceSurvey,
+  ExperienceSurvey
 } from '../models';
 import {ExperienceRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
+
 
 export class ExperienceExperienceSurveyController {
   constructor(
     @repository(ExperienceRepository) protected experienceRepository: ExperienceRepository,
+
+    // @inject('service.jwt.service')
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
 
+  @authenticate("jwt")
   @get('/experiences/{id}/experience-survey', {
     responses: {
       '200': {
@@ -45,6 +56,7 @@ export class ExperienceExperienceSurveyController {
     return this.experienceRepository.experienceSurvey(id).get(filter);
   }
 
+  @authenticate("jwt")
   @post('/experiences/{id}/experience-survey', {
     responses: {
       '200': {
@@ -70,6 +82,7 @@ export class ExperienceExperienceSurveyController {
     return this.experienceRepository.experienceSurvey(id).create(experienceSurvey);
   }
 
+  @authenticate("jwt")
   @patch('/experiences/{id}/experience-survey', {
     responses: {
       '200': {
@@ -93,6 +106,7 @@ export class ExperienceExperienceSurveyController {
     return this.experienceRepository.experienceSurvey(id).patch(experienceSurvey, where);
   }
 
+  @authenticate("jwt")
   @del('/experiences/{id}/experience-survey', {
     responses: {
       '200': {

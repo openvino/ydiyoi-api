@@ -1,31 +1,36 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
+  del, get,
+  getModelSchemaRef, param,
+  patch, post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {Status} from '../models';
 import {StatusRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
 
 export class StatusController {
   constructor(
     @repository(StatusRepository)
-    public statusRepository : StatusRepository,
-  ) {}
+    public statusRepository: StatusRepository,
 
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
+  ) { }
+
+  @authenticate("jwt")
   @post('/statuses')
   @response(200, {
     description: 'Status model instance',
@@ -47,6 +52,7 @@ export class StatusController {
     return this.statusRepository.create(status);
   }
 
+  @authenticate("jwt")
   @get('/statuses/count')
   @response(200, {
     description: 'Status model count',
@@ -58,6 +64,7 @@ export class StatusController {
     return this.statusRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/statuses')
   @response(200, {
     description: 'Array of Status model instances',
@@ -76,6 +83,7 @@ export class StatusController {
     return this.statusRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/statuses')
   @response(200, {
     description: 'Status PATCH success count',
@@ -95,6 +103,7 @@ export class StatusController {
     return this.statusRepository.updateAll(status, where);
   }
 
+  @authenticate("jwt")
   @get('/statuses/{id}')
   @response(200, {
     description: 'Status model instance',
@@ -111,6 +120,7 @@ export class StatusController {
     return this.statusRepository.findById(id, filter);
   }
 
+  @authenticate("jwt")
   @patch('/statuses/{id}')
   @response(204, {
     description: 'Status PATCH success',
@@ -129,17 +139,19 @@ export class StatusController {
     await this.statusRepository.updateById(id, status);
   }
 
-  @put('/statuses/{id}')
-  @response(204, {
-    description: 'Status PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() status: Status,
-  ): Promise<void> {
-    await this.statusRepository.replaceById(id, status);
-  }
+  // @authenticate("jwt")
+  // @put('/statuses/{id}')
+  // @response(204, {
+  //   description: 'Status PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() status: Status,
+  // ): Promise<void> {
+  //   await this.statusRepository.replaceById(id, status);
+  // }
 
+  @authenticate("jwt")
   @del('/statuses/{id}')
   @response(204, {
     description: 'Status DELETE success',

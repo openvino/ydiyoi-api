@@ -1,3 +1,5 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -10,19 +12,26 @@ import {
   del, get,
   getModelSchemaRef, param,
   patch, post,
-  put,
   requestBody,
   response
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {Experience, ExperienceSurvey} from '../models';
 import {ExperienceSurveyRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
 
 export class ExperienceSurveyController {
   constructor(
     @repository(ExperienceSurveyRepository)
     public experienceSurveyRepository: ExperienceSurveyRepository,
+
+    // @inject('service.jwt.service')
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
 
+  @authenticate("jwt")
   @post('/experience-surveys')
   @response(200, {
     description: 'ExperienceSurvey model instance',
@@ -44,6 +53,7 @@ export class ExperienceSurveyController {
     return this.experienceSurveyRepository.create(experienceSurvey);
   }
 
+  @authenticate("jwt")
   @get('/experience-surveys/count')
   @response(200, {
     description: 'ExperienceSurvey model count',
@@ -55,6 +65,7 @@ export class ExperienceSurveyController {
     return this.experienceSurveyRepository.count(where);
   }
 
+  @authenticate("jwt")
   @get('/experience-surveys')
   @response(200, {
     description: 'Array of ExperienceSurvey model instances',
@@ -73,6 +84,7 @@ export class ExperienceSurveyController {
     return this.experienceSurveyRepository.find(filter);
   }
 
+  @authenticate("jwt")
   @patch('/experience-surveys')
   @response(200, {
     description: 'ExperienceSurvey PATCH success count',
@@ -92,6 +104,7 @@ export class ExperienceSurveyController {
     return this.experienceSurveyRepository.updateAll(experienceSurvey, where);
   }
 
+  @authenticate("jwt")
   @get('/experience-surveys/{id}')
   @response(200, {
     description: 'ExperienceSurvey model instance',
@@ -108,6 +121,7 @@ export class ExperienceSurveyController {
     return this.experienceSurveyRepository.findById(id, filter);
   }
 
+  @authenticate("jwt")
   @patch('/experience-surveys/{id}')
   @response(204, {
     description: 'ExperienceSurvey PATCH success',
@@ -126,17 +140,19 @@ export class ExperienceSurveyController {
     await this.experienceSurveyRepository.updateById(id, experienceSurvey);
   }
 
-  @put('/experience-surveys/{id}')
-  @response(204, {
-    description: 'ExperienceSurvey PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() experienceSurvey: ExperienceSurvey,
-  ): Promise<void> {
-    await this.experienceSurveyRepository.replaceById(id, experienceSurvey);
-  }
+  // @authenticate("jwt")
+  // @put('/experience-surveys/{id}')
+  // @response(204, {
+  //   description: 'ExperienceSurvey PUT success',
+  // })
+  // async replaceById(
+  //   @param.path.number('id') id: number,
+  //   @requestBody() experienceSurvey: ExperienceSurvey,
+  // ): Promise<void> {
+  //   await this.experienceSurveyRepository.replaceById(id, experienceSurvey);
+  // }
 
+  @authenticate("jwt")
   @del('/experience-surveys/{id}')
   @response(204, {
     description: 'ExperienceSurvey DELETE success',
@@ -146,6 +162,7 @@ export class ExperienceSurveyController {
   }
 
   // from experience-survey-experience.controller
+  @authenticate("jwt")
   @get('/experience-surveys/{id}/experience', {
     responses: {
       '200': {

@@ -1,3 +1,5 @@
+import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -16,17 +18,27 @@ import {
   post,
   requestBody
 } from '@loopback/rest';
+import {TokenServiceBindings} from '../keys';
 import {
   Experience, User
 } from '../models';
 import {ExperienceRepository, UserRepository} from '../repositories';
+import {JWTService} from '../services/jwt-service';
 
 export class UserExperienceController {
   constructor(
-    @repository(UserRepository) protected userRepository: UserRepository,
-    @repository(ExperienceRepository) public experienceRepository: ExperienceRepository,
+    @repository(UserRepository)
+    protected userRepository: UserRepository,
+
+    @repository(ExperienceRepository)
+    public experienceRepository: ExperienceRepository,
+
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService: JWTService,
+
   ) { }
 
+  @authenticate("jwt")
   @get('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -46,6 +58,7 @@ export class UserExperienceController {
     return this.userRepository.experiences(id).find(filter);
   }
 
+  @authenticate("jwt")
   @post('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -71,6 +84,7 @@ export class UserExperienceController {
     return this.userRepository.experiences(id).create(experience);
   }
 
+  @authenticate("jwt")
   @patch('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -94,6 +108,7 @@ export class UserExperienceController {
     return this.userRepository.experiences(id).patch(experience, where);
   }
 
+  @authenticate("jwt")
   @del('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -110,6 +125,7 @@ export class UserExperienceController {
   }
 
   // Array of Experience detail
+  @authenticate("jwt")
   @get('/users/{id}/experiencesdetail', {
     responses: {
       '200': {
@@ -125,11 +141,9 @@ export class UserExperienceController {
   async findDetail(
     @param.path.number('id') id: number,
   ): Promise<Experience[]> {
-
     // relation: Experience HasOne Wine
     // fields returned: Experience.id, Experience.date, Experience.Status
     // Wine.id, Wine.name, Wine.TokenSymbol, Wine.TokenValue,
-
     const filterBuilder = new FilterBuilder<Experience>();
     const filter = filterBuilder
       .fields('id', 'date', 'statusId')
