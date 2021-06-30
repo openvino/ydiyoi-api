@@ -219,7 +219,7 @@ export class WineController {
       }
     }
 
-    const retVal = `{ statusId : ${xpStatus?.toString()} , allowClaim : ${allowClaim} }`;
+    const retVal = `{ "statusId" : ${xpStatus?.toString()} , "allowClaim" : ${allowClaim} }`;
 
     return retVal;
   }

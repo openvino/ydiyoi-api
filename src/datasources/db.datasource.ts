@@ -6,8 +6,8 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'db',
   connector: 'postgresql',
-  host: 'localhost',
-  port: 5434,
+  host: 'psqldock',
+  port: 5432,
   user: 'postgres',
   password: '***REMOVED***',
   database: 'ydiyoi'
