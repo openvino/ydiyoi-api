@@ -33,7 +33,8 @@
     "openapi-spec": "node ./dist/openapi-spec",
     "rebuild": "npm run clean && npm run build",
     "prestart": "npm run rebuild",
-    "start": "node -r source-map-support/register .",
+    "oldstart": "node -r source-map-support/register .",
+    "start": "node -r dotenv/config .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache"
   },
   "repository": {
@@ -60,6 +61,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/lodash": "^4.14.168",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
     "loopback-connector-postgresql": "^5.3.0",
@@ -68,12 +70,12 @@
   },
   "devDependencies": {
     "@loopback/build": "^6.2.9",
-    "source-map-support": "^0.5.19",
+    "@loopback/eslint-config": "^10.0.5",
     "@loopback/testlab": "^3.2.11",
     "@types/multer": "^1.4.5",
     "@types/node": "^10.17.51",
-    "@loopback/eslint-config": "^10.0.5",
     "eslint": "^7.18.0",
+    "source-map-support": "^0.5.19",
     "typescript": "~4.1.3"
   }
 }

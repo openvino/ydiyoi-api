@@ -5,9 +5,10 @@ import {juggler} from '@loopback/repository';
 const dbDatabase = process.env.DB_DATABASE;
 const dbHost = process.env.DB_HOST;
 const dbPort = parseInt(process.env.DB_PORT || '')
-const dbPortN = Number.isInteger(dbPort) ? dbPort : 21799
+const dbPortN = Number.isInteger(dbPort) ? dbPort : 5432
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
+
 
 
 // ** db config
