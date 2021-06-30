@@ -19,7 +19,9 @@ const config = {
   port: dbPortN,
   user: dbUser,
   password: dbPassword,
-  database: dbDatabase
+  database: dbDatabase,
+  ssl: true,
+  sslmode: 'require'
 };
 
 
