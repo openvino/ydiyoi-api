@@ -68,3 +68,4 @@ pgdata
 
 #uploaded files directory
 .sandbox
+.DS_Store
