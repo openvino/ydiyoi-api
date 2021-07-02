@@ -5,11 +5,12 @@ export * from './application';
 export async function main(options: ApplicationConfig = {}) {
   const app = new YdiYoiApplication(options);
   await app.boot();
-  await app.migrateSchema();
+  // migrate BD en every start
+  // await app.migrateSchema();
   await app.start();
 
   const url = app.restServer.url;
-  console.log(`Server is running at ${url}`);
+  console.log(`YDI-YOI API is running at ${url}`);
   console.log(`Try ${url}/ping`);
 
   return app;
