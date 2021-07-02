@@ -1,0 +1,50 @@
+version: "3.7"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  psqldock:
+    image: luisvid/postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: brocal
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ydiyoi
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-tier
+  api:
+    image: luisvid/ydi-yoi
+    restart: always
+    environment:
+      # Local  host:'localhost' port:5434
+      # Deploy host:'psqldock'  port:5432
+      DB_DATABASE: ydiyoi
+      DB_HOST: psqldock
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: brocal
+    ports:
+      - "3000:3000"
+    networks:
+      - app-tier
+    depends_on:
+      - psqldock
+    links:
+      - psqldock
+  front:
+    image: luisvid/ydiyoi-front
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - app-tier
+    depends_on:
+      - api
+    links:
+      - api

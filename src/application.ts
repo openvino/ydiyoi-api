@@ -65,13 +65,6 @@ export class YdiYoiApplication extends BootMixin(
     };
   }
   setupBinding(): void {
-    // this.bind('service.hasher').toClass(BcryptHasher);
-    // this.bind('rounds').to(10);
-    // this.bind('service.user.service').toClass(MyUserService)
-    // this.bind('service.jwt.service').toClass(JWTService);
-    // this.bind('authentication.jwt.secret').to('dvchgdvcjsdbhcbdjbvjb');
-    // this.bind('authentication.jwt.expiresIn').to('7h');
-
     this.bind(PasswordHasherBindings.PASSWORD_HASHER).toClass(BcryptHasher);
     this.bind(PasswordHasherBindings.ROUNDS).to(10)
     this.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService);
@@ -85,7 +78,7 @@ export class YdiYoiApplication extends BootMixin(
       openapi: '3.0.0',
       info: {
         title: 'YDI-YOI API',
-        version: '1.0.3',
+        version: '1.0.4',
       },
       paths: {},
       components: {securitySchemes: SECURITY_SCHEME_SPEC},
@@ -104,7 +97,7 @@ export class YdiYoiApplication extends BootMixin(
  */
   protected configureFileUpload(destination?: string) {
     // Upload files to `dist/.sandbox` by default
-    destination = destination ?? path.join(__dirname, '../.xppictures');
+    destination = destination ?? path.join(__dirname, '../../.xppictures');
     this.bind(STORAGE_DIRECTORY).to(destination);
     const multerOptions: multer.Options = {
       storage: multer.diskStorage({
