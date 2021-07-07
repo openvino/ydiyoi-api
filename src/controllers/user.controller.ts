@@ -11,18 +11,22 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getJsonSchemaRef, getModelSchemaRef, param,
+  getJsonSchemaRef, getModelSchemaRef, HttpErrors, param,
   patch, post,
+  put,
   requestBody,
   response
 } from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import * as _ from 'lodash';
+import {SentMessageInfo} from 'nodemailer';
+import {v4 as uuidv4} from 'uuid';
 import {PasswordHasherBindings, TokenServiceBindings, UserServiceBindings} from '../keys';
-import {User} from '../models';
+import {KeyAndPassword, ResetPasswordInit, User} from '../models';
 import {LoginResponse} from '../models/login-response.model';
 import {Credentials, UserRepository} from '../repositories';
 import {validateCredentials} from '../services';
+import {EmailService} from '../services/email.service';
 import {BcryptHasher} from '../services/hash.password';
 import {JWTService} from '../services/jwt-service';
 import {MyUserService} from '../services/user-service';
@@ -47,6 +51,10 @@ export class UserController {
     // @inject('service.jwt.service')
     @inject(TokenServiceBindings.TOKEN_SERVICE)
     public jwtService: JWTService,
+
+    @inject('services.EmailService')
+    public emailService: EmailService,
+
 
   ) { }
 
@@ -254,5 +262,127 @@ export class UserController {
   ): Promise<UserProfile> {
     return Promise.resolve(currentUser);
   }
+
+  // We will add our password reset here
+  @post('/reset-password/init')
+  async resetPasswordInit(
+    @requestBody() resetPasswordInit: ResetPasswordInit,
+  ): Promise<string> {
+    // checks whether email is valid as per regex pattern provided
+    const email = await this.validateEmail(resetPasswordInit.email);
+
+    // At this point we are dealing with valid email.
+    // Lets check whether there is an associated account
+    const foundUser = await this.userRepository.findOne({
+      where: {email},
+    });
+
+    // No account found
+    if (!foundUser) {
+      throw new HttpErrors.NotFound(
+        'No hay una cuenta asociada con la dirección de correo electrónico proporcionada.',
+      );
+    }
+
+    // We generate unique reset key to associate with reset request
+    foundUser.resetKey = uuidv4();
+
+    try {
+      // Updates the user to store their reset key with error handling
+      await this.userRepository.updateById(foundUser.id, foundUser);
+    } catch (e) {
+      return e;
+    }
+
+    // Send an email to the user's email address
+    const nodeMailer: SentMessageInfo = await this.emailService.sendResetPasswordMail(
+      foundUser,
+    );
+
+    // Nodemailer has accepted the request. All good
+    if (nodeMailer.accepted.length) {
+      return 'Se ha enviado un correo electrónico con instrucciones para restablecer la contraseña al correo electrónico proporcionado.';
+    }
+
+    // Nodemailer did not complete the request alert the user
+    throw new HttpErrors.InternalServerError(
+      'Error al enviar el correo electrónico para restablecer la contraseña',
+    );
+  }
+
+  @put('/reset-password/finish')
+  async resetPasswordFinish(
+    @requestBody() keyAndPassword: KeyAndPassword,
+  ): Promise<string> {
+    // Checks whether password and reset key meet minimum security requirements
+    const {resetKey, password} = await this.validateKeyPassword(keyAndPassword);
+
+    // Search for a user using reset key
+    const foundUser = await this.userRepository.findOne({
+      where: {resetKey: resetKey},
+    });
+
+    // No user account found
+    if (!foundUser) {
+      throw new HttpErrors.NotFound(
+        'No hay una cuenta asociada con la reset key proporcionada.',
+      );
+    }
+
+    // Encrypt password to avoid storing it as plain text
+    const passwordHash = await this.hasher.hashPassword(password);
+
+    try {
+      // Update user password with the newly provided password
+      // await this.userRepository
+      //   .userCredentials(foundUser.id)
+      //   .patch({password: passwordHash});
+
+      foundUser.password = passwordHash;
+      // Remove reset key from database its no longer valid
+      foundUser.resetKey = '';
+
+      // Update the user removing the reset key
+      await this.userRepository.updateById(foundUser.id, foundUser);
+    } catch (e) {
+      return e;
+    }
+
+    return 'La solicitud de restablecimiento de contraseña se completó correctamente';
+  }
+
+  async validateKeyPassword(keyAndPassword: KeyAndPassword): Promise<KeyAndPassword> {
+    if (!keyAndPassword.password || keyAndPassword.password.length < 8) {
+      throw new HttpErrors.UnprocessableEntity(
+        'La contraseña debe tener un mínimo de 8 caracteres',
+      );
+    }
+
+    if (keyAndPassword.password !== keyAndPassword.confirmPassword) {
+      throw new HttpErrors.UnprocessableEntity(
+        'La contraseña y la contraseña de confirmación no coinciden',
+      );
+    }
+
+    if (
+      _.isEmpty(keyAndPassword.resetKey) ||
+      keyAndPassword.resetKey.length === 0 ||
+      keyAndPassword.resetKey.trim() === ''
+    ) {
+      throw new HttpErrors.UnprocessableEntity('Reset key is mandatory');
+    }
+
+    return keyAndPassword;
+  }
+
+  async validateEmail(email: string): Promise<string> {
+    const emailRegPattern = /\S+@\S+\.\S+/;
+    if (!emailRegPattern.test(email)) {
+      throw new HttpErrors.UnprocessableEntity('Invalid email address');
+    }
+    return email;
+  }
+
+
 
 }
