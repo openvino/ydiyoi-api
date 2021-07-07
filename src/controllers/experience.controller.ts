@@ -52,14 +52,12 @@ export class ExperienceController {
       },
     })
     experience: Omit<Experience, 'id'>,
-  ): Promise<Experience> {
-    // create new experience and get the returning inserted object
-    const newExperience = await this.experienceRepository.create(experience);
+  ): Promise<string> {
 
-    //get qrvalue and new id
+    let xpStatus = true;
+    let msg = '';
+
     const newQrValue = experience.qrValue;
-    const newXpId = newExperience.id!;
-    // console.log(newExperience);
 
     //Search for wine by the qr_id
     const filterBuilder = new FilterBuilder<Wine>();
@@ -68,16 +66,33 @@ export class ExperienceController {
       .build();
     let wine = await this.wineRepository.findOne(filtr);
 
-    // update wine with experience.id
     if (wine != undefined) {
-      //TODO: check if the wine already have an experienceId
-      wine.experienceId = newXpId;
-      await this.wineRepository.update(wine);
+      //check if the wine already have an experienceId
+      if (wine.experienceId != undefined) {
+        xpStatus = false;
+        msg = 'El QRValue ya ha sido reclamado';
+      }
     } else {
-      //TODO: inform error if the wine is not found
+      // the wine is not found
+      xpStatus = false;
+      msg = 'El QRValue no es válido';
     }
 
-    return newExperience;
+    if (xpStatus) {
+      // create new experience and get the returning inserted object
+      const newExperience = await this.experienceRepository.create(experience);
+      const newXpId = newExperience.id!;
+      // update wine with experience.id
+      if (wine != undefined) {
+        wine.experienceId = newXpId;
+        await this.wineRepository.update(wine);
+      }
+      msg = 'Nueva experiencia creada: ' + newXpId.toString();
+    }
+
+    const retVal = `{ "status" : ${xpStatus?.toString()} , "message" : ${msg} }`;
+
+    return retVal;
   }
 
   @authenticate("jwt")
