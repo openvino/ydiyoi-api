@@ -1,4 +1,4 @@
-import {authenticate} from '@loopback/authentication';
+import {authenticate, AuthenticationBindings} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {
   Count,
@@ -15,13 +15,16 @@ import {
   requestBody,
   response
 } from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
+import {SentMessageInfo} from 'nodemailer';
 import {TokenServiceBindings} from '../keys';
 import {Experience, User, Wine} from '../models';
-import {ExperienceRepository, WineRepository} from '../repositories';
+import {ExperienceRepository, UserRepository, WineRepository} from '../repositories';
+import {EmailService} from '../services/email.service';
 import {JWTService} from '../services/jwt-service';
 
-
 export class ExperienceController {
+
   constructor(
     @repository(ExperienceRepository)
     public experienceRepository: ExperienceRepository,
@@ -29,8 +32,14 @@ export class ExperienceController {
     @repository(WineRepository)
     public wineRepository: WineRepository,
 
+    @repository(UserRepository)
+    public userRepository: UserRepository,
+
     @inject(TokenServiceBindings.TOKEN_SERVICE)
     public jwtService: JWTService,
+
+    @inject('services.EmailService')
+    public emailService: EmailService,
 
   ) { }
 
@@ -52,6 +61,7 @@ export class ExperienceController {
       },
     })
     experience: Omit<Experience, 'id'>,
+    @inject(AuthenticationBindings.CURRENT_USER) currentUser: UserProfile,
   ): Promise<string> {
 
     let xpStatus = true;
@@ -83,10 +93,28 @@ export class ExperienceController {
       const newExperience = await this.experienceRepository.create(experience);
       const newXpId = newExperience.id!;
       // update wine with experience.id
+      // at this point wine exists, but undefined check is necesary to avoid errors
       if (wine != undefined) {
         wine.experienceId = newXpId;
         await this.wineRepository.update(wine);
+
+        //send confirmation email to user and admin
+        //find user
+        const foundUser = await this.userRepository.findById(currentUser.id)
+        const sentMessageInfo: SentMessageInfo = await this.emailService.sendXpConfirmation(
+          foundUser, newExperience);
+        const sentMessageInfo2: SentMessageInfo = await this.emailService.sendXpConfirmationAdmin(
+          foundUser, newExperience, wine);
+
+        // check if Nodemailer did complete the request
+        if (sentMessageInfo.accepted.length) {
+          console.log('Se envió correo electrónico de confirmación');
+        } else {
+          console.log('Se produjo un error al enviar el correo electrónico de confirmación');
+        }
+
       }
+
       msg = 'Nueva experiencia creada: ' + newXpId.toString();
     }
 
@@ -94,6 +122,7 @@ export class ExperienceController {
 
     return retVal;
   }
+
 
   @authenticate("jwt")
   @get('/experiences/count')

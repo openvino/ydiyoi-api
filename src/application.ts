@@ -78,7 +78,7 @@ export class YdiYoiApplication extends BootMixin(
       openapi: '3.0.0',
       info: {
         title: 'YDI-YOI API',
-        version: '1.0.4',
+        version: '1.0.5',
       },
       paths: {},
       components: {securitySchemes: SECURITY_SCHEME_SPEC},

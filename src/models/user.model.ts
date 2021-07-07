@@ -73,6 +73,11 @@ export class User extends Entity {
   })
   statusId: number;
 
+  @property({
+    type: 'string',
+  })
+  resetKey?: string;
+
   @hasMany(() => Experience)
   experiences: Experience[];
 
