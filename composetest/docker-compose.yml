@@ -57,11 +57,14 @@ services:
     ports:
       - "25:25"
     environment:
-    # Generic SMTP Relay: sendgrid
-    - SMARTHOST_ADDRESS=smtp.sendgrid.net
-    - SMARTHOST_PORT=587
-    - SMARTHOST_USER=apikey
-    - SMARTHOST_PASSWORD=
-    - SMARTHOST_ALIASES=*.sendgrid.net
+    # # To act as a Gmail relay
+    # - GMAIL_USER=
+    # - GMAIL_PASSWORD=
+    # Generic SMTP Relay: ferozo
+      - SMARTHOST_ADDRESS=c2090663.ferozo.com
+      - SMARTHOST_PORT=465
+      - SMARTHOST_USER=luis@agilmentor.com
+      - SMARTHOST_PASSWORD=Brocal*5813
+      - SMARTHOST_ALIASES=*.ferozo.com
     networks:
       - app-tier
