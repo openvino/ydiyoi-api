@@ -4,6 +4,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterBuilder,
   FilterExcludingWhere,
   repository,
   Where
@@ -64,6 +65,7 @@ export class SurveyQuestionsController {
     return this.surveyQuestionsRepository.count(where);
   }
 
+  // returns the active questions
   @authenticate("jwt")
   @get('/survey-questions')
   @response(200, {
@@ -80,7 +82,12 @@ export class SurveyQuestionsController {
   async find(
     @param.filter(SurveyQuestions) filter?: Filter<SurveyQuestions>,
   ): Promise<SurveyQuestions[]> {
-    return this.surveyQuestionsRepository.find(filter);
+
+    const filterBuilder = new FilterBuilder<SurveyQuestions>();
+    const filtr = filterBuilder
+      .where({active: true})
+      .build();
+    return this.surveyQuestionsRepository.find(filtr);
   }
 
   @authenticate("jwt")
