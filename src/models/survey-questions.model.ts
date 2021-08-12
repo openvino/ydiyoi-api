@@ -33,6 +33,18 @@ export class SurveyQuestions extends Entity {
   question3: string;
 
   @property({
+    type: 'string',
+    required: true,
+  })
+  question4: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  question5: string;
+
+  @property({
     type: 'boolean',
     required: true,
   })
