@@ -66,6 +66,7 @@ export class ExperienceController {
 
     let xpStatus = true;
     let msg = '';
+    let newXpId = 0;
 
     const newQrValue = experience.qrValue;
 
@@ -91,7 +92,7 @@ export class ExperienceController {
     if (xpStatus) {
       // create new experience and get the returning inserted object
       const newExperience = await this.experienceRepository.create(experience);
-      const newXpId = newExperience.id!;
+      newXpId = newExperience.id!;
       // update wine with experience.id
       // at this point wine exists, but undefined check is necesary to avoid errors
       if (wine != undefined) {
@@ -118,7 +119,7 @@ export class ExperienceController {
       msg = 'Nueva experiencia creada: ' + newXpId.toString();
     }
 
-    const retVal = `{ "status" : ${xpStatus?.toString()} , "message" : ${msg} }`;
+    const retVal = `{ "status" : ${xpStatus?.toString()} , "message" : "${msg}", "experienceId" : ${newXpId.toString()} }`;
 
     return retVal;
   }
