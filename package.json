@@ -62,6 +62,7 @@
     "@types/lodash": "^4.14.168",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
+    "ipfs-http-client": "^51.0.1",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
     "loopback-connector-postgresql": "^5.3.0",
