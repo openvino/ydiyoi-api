@@ -40,6 +40,26 @@ export class ExperienceSurvey extends Entity {
   })
   answer3?: string;
 
+  @property({
+    type: 'string',
+  })
+  question4?: string;
+
+  @property({
+    type: 'string',
+  })
+  answer4?: string;
+
+  @property({
+    type: 'string',
+  })
+  question5?: string;
+
+  @property({
+    type: 'string',
+  })
+  answer5?: string;
+
   @belongsTo(() => Experience)
   experienceId: number;
 
