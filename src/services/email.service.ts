@@ -62,17 +62,17 @@ export class EmailService {
     const emailTemplate = new EmailTemplate({
       from: 'mailing@agilmentor.com',
       to: user.email,
-      subject: '[YDI-YOI] Confirmación de experiencia',
+      subject: '[YDI-YOI] New experience confirmation',
       html: `
       <div>
-      <h2>Estimado/a</h2>
+      <h2>Dear</h2>
       <h2>${user.firstName} ${user.lastName}</h2>
-      <p>Su experiencia con nuestro vino se ha registrado exitosamente</p>
-      <p>Fecha: ${experience.date}</p>
-      <p>Ubicación: ${experience.location}</p>
-      <p>Identificación de la botella: ${experience.qrValue}</p>
-      <p>¡Muchas gracias!</p>
-      <p>Saludos cordiales</p>
+      <p>Your experience with our wine has been successfully registered</p>
+      <p>Date: ${experience.date}</p>
+      <p>Location: ${experience.location}</p>
+      <p>Bottle Identification: ${experience.qrValue}</p>
+      <p>Thanks a lot!</p>
+      <p>regards</p>
       </div>
       `,
     });
@@ -89,19 +89,19 @@ export class EmailService {
     const emailTemplate = new EmailTemplate({
       from: 'mailing@agilmentor.com',
       to: 'luis@agilmentor.com',
-      subject: '[YDI-YOI] Nueva experiencia registrada',
+      subject: '[YDI-YOI] A new experience has been registered',
       html: `
       <div>
-      <h2>Aviso de nueva experiencia registrada por el usuario</h2>
+      <h2>A new experience has been registered by the user: </h2>
       <h2>${user.firstName} ${user.lastName}</h2>
-      <p>Los datos de la experiencia registrada son los siguientes</p>
-      <p>Fecha: ${experience.date}</p>
-      <p>Ubicación: ${experience.location}</p>
-      <p>Identificación de la botella: ${experience.qrValue}</p>
-      <p>Vino: ${wine.name}</p>
-      <p>Botella: ${wine.bottleNo}</p>
+      <p>The data of the registered experience are the following: </p>
+      <p>Date: ${experience.date}</p>
+      <p>Location: ${experience.location}</p>
+      <p>Bottle Identification: ${experience.qrValue}</p>
+      <p>Wine: ${wine.name}</p>
+      <p>Bottle no: ${wine.bottleNo}</p>
       <p>Token: ${wine.tokenSymbol} Valor: ${wine.tokenValue}</p>
-      <p>Saludos cordiales</p>
+      <p>regards</p>
       </div>
       `,
     });
