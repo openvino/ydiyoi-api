@@ -58,12 +58,16 @@ export class StorageController {
     request: Request,
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @inject(AuthenticationBindings.CURRENT_USER) currentUser: UserProfile,
-  ): Promise<Array<string>> {
+  ): Promise<string> {
+    // ): Promise<Array<string>> {
 
     let ipfsHashes: Array<string> = [];
+    let ipfsHash = "";
+    let ipfsUrl = "";
+    let retVal = "";
 
     // Upload to IPFS
-    await new Promise<object>((resolve, reject) => {
+    await new Promise<string>((resolve, reject) => {
       const storage = multer.memoryStorage()
       const upload = multer({storage})
 
@@ -75,11 +79,12 @@ export class StorageController {
             try {
               console.log("Submitting file to ipfs...")
               const added = await client.add(file.buffer);
-              const ipfsLink = added.path;
+              ipfsHash = added.path;
+              ipfsUrl = "https://ipfs.io/ipfs/" + ipfsHash;
+              retVal = `{ "fileHash" : ${ipfsHash} , "ipfsUrl" : "${ipfsUrl}" }`;
 
-              console.log('The file was saved in IPFS: https://ipfs.io/ipfs/' + ipfsLink);
-              ipfsHashes.push(ipfsLink)
-
+              console.log('The file was saved in IPFS: ' + ipfsUrl);
+              ipfsHashes.push(ipfsHash)
               // console.log("Submitting hash to SmartContract...")
               // code here....
 
@@ -88,12 +93,12 @@ export class StorageController {
               reject(err);
             }
           }
-          resolve(ipfsHashes);
+          resolve(retVal);
         }
       })
     })
 
-    return Promise.resolve(ipfsHashes);
+    return Promise.resolve(retVal);
 
   }
 

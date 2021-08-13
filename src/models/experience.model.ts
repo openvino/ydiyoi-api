@@ -39,6 +39,17 @@ export class Experience extends Entity {
   })
   qrValue?: string;
 
+  @property({
+    type: 'string',
+  })
+  ipfsUrl?: string;
+
+  @property({
+    type: 'boolean',
+    default: false,
+  })
+  nftGenerated?: boolean;
+
   @belongsTo(() => User)
   userId: number;
 
