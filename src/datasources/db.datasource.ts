@@ -20,6 +20,17 @@ const config = {
   database: dbDatabase
 };
 
+// // ** db config for migration
+// const config = {
+//   name: 'db',
+//   connector: 'postgresql',
+//   host: "localhost",
+//   port: 5434,
+//   user: "postgres",
+//   password: "***REMOVED***",
+//   database: "ydiyoi"
+// };
+
 // ssl: true,
 // sslmode: 'require'
 
