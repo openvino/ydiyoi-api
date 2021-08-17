@@ -141,18 +141,14 @@ export class UserExperienceController {
   async findDetail(
     @param.path.number('id') id: number,
   ): Promise<Experience[]> {
-    // relation: Experience HasOne Wine
-    // fields returned: Experience.id, Experience.date, Experience.Status
-    // Wine.id, Wine.name, Wine.TokenSymbol, Wine.TokenValue,
     const filterBuilder = new FilterBuilder<Experience>();
     const filter = filterBuilder
-      .fields('id', 'date', 'statusId')
+      .fields('id', 'date', 'location', 'ipfsUrl', 'nftGenerated', 'statusId')
       .include({
         relation: 'wine', scope: {
-          fields: ['experienceId', 'name',
-            'tokenSymbol', 'tokenValue']
+          fields: ['experienceId', 'id', 'name', 'qrValue']
         }
-      })
+      }, {relation: 'experienceSurvey'})
       .where({userId: id})
       .build();
 
