@@ -20,19 +20,7 @@ const config = {
   database: dbDatabase
 };
 
-// // ** db config for migration
-// const config = {
-//   name: 'db',
-//   connector: 'postgresql',
-//   host: "localhost",
-//   port: 5434,
-//   user: "postgres",
-//   password: "***REMOVED***",
-//   database: "ydiyoi"
-// };
-
-// ssl: true,
-// sslmode: 'require'
+console.log(config);
 
 // Observe application's life cycle to disconnect the datasource when
 // application is stopped. This allows the application to be shut down

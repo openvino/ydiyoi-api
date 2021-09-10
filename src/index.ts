@@ -3,10 +3,23 @@ import {ApplicationConfig, YdiYoiApplication} from './application';
 export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
+
+  //* Enabling HTTPS
+  // var fs = require('fs');
+  // const optionssl = {
+  //   rest: {
+  //     protocol: 'https',
+  //     key: fs.readFileSync('./cert/privatekey.pem'),
+  //     cert: fs.readFileSync('./cert/certificate.pem'),
+  //   }
+  // };
+  // const app = new YdiYoiApplication(optionssl);
+
   const app = new YdiYoiApplication(options);
+
   await app.boot();
   // migrate BD en every start
-  // await app.migrateSchema();
+  await app.migrateSchema();
   await app.start();
 
   const url = app.restServer.url;
@@ -20,7 +33,7 @@ if (require.main === module) {
   // Run the application
   const config = {
     rest: {
-      port: +(process.env.PORT ?? 3000),
+      port: +(process.env.PORT ?? 4000),
       host: process.env.HOST,
       // The `gracePeriodForClose` provides a graceful close for http/https
       // servers with keep-alive clients. The default value is `Infinity`
