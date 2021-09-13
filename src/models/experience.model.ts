@@ -45,10 +45,21 @@ export class Experience extends Entity {
   ipfsUrl?: string;
 
   @property({
+    type: 'string',
+  })
+  ipfsUrlJson?: string;
+
+  @property({
     type: 'boolean',
     default: false,
   })
   nftGenerated?: boolean;
+
+  @property({
+    type: 'string',
+  })
+  nftUrl?: string;
+
 
   @belongsTo(() => User)
   userId: number;

@@ -4,6 +4,7 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterBuilder,
   repository,
   Where
 } from '@loopback/repository';
@@ -17,6 +18,7 @@ import {
   post,
   requestBody
 } from '@loopback/rest';
+import {create} from 'ipfs-http-client';
 import {TokenServiceBindings} from '../keys';
 import {
   Experience,
@@ -24,6 +26,9 @@ import {
 } from '../models';
 import {ExperienceRepository} from '../repositories';
 import {JWTService} from '../services/jwt-service';
+
+//IPFS conf
+const client = create({host: 'ipfs.infura.io', port: 5001, protocol: 'https'})
 
 
 export class ExperienceExperienceSurveyController {
@@ -79,7 +84,35 @@ export class ExperienceExperienceSurveyController {
       },
     }) experienceSurvey: Omit<ExperienceSurvey, 'id'>,
   ): Promise<ExperienceSurvey> {
-    return this.experienceRepository.experienceSurvey(id).create(experienceSurvey);
+
+    const newExperienceSurvey = await this.experienceRepository.experienceSurvey(id).create(experienceSurvey);
+
+    // get Experiece detail to JSON
+    const filterBuilder = new FilterBuilder<Experience>();
+    const filter = filterBuilder
+      .fields('id', 'date', 'ipfsUrl')
+      .include({
+        relation: 'wine', scope: {
+          fields: ['experienceId', 'id', 'name', 'qrValue']
+        }
+      }, {relation: 'experienceSurvey'})
+      .where({id: id})
+      .build();
+
+    const newExperienceDetail = await this.experienceRepository.find(filter);
+    console.log(newExperienceDetail);
+
+    // upload experience JSON to IPFS
+    const jsonObj = JSON.stringify(newExperienceDetail);
+    console.log("jsonObj: " + jsonObj);
+    const added = await client.add(jsonObj);
+
+    // update experience JSON  IPFS URL
+    const newExperience = await this.experienceRepository.findById(id);
+    newExperience.ipfsUrlJson = "https://ipfs.io/ipfs/" + added.path;
+    await this.experienceRepository.update(newExperience);
+
+    return newExperienceSurvey;
   }
 
   @authenticate("jwt")

@@ -23,6 +23,8 @@ import {ExperienceRepository, UserRepository, WineRepository} from '../repositor
 import {EmailService} from '../services/email.service';
 import {JWTService} from '../services/jwt-service';
 
+
+
 export class ExperienceController {
 
   constructor(
@@ -99,18 +101,21 @@ export class ExperienceController {
         wine.experienceId = newXpId;
         await this.wineRepository.update(wine);
 
-        //send confirmation email to user and admin
-        //find user
-        const foundUser = await this.userRepository.findById(currentUser.id)
-        const sentMessageInfo: SentMessageInfo = await this.emailService.sendXpConfirmation(
-          foundUser, newExperience);
-        const sentMessageInfo2: SentMessageInfo = await this.emailService.sendXpConfirmationAdmin(
-          foundUser, newExperience, wine);
-
-        // check if Nodemailer did complete the request
-        if (sentMessageInfo.accepted.length) {
-          console.log('Se envió correo electrónico de confirmación');
-        } else {
+        try {
+          //send confirmation email to user and admin
+          //find user
+          const foundUser = await this.userRepository.findById(currentUser.id)
+          const sentMessageInfo: SentMessageInfo = await this.emailService.sendXpConfirmation(
+            foundUser, newExperience);
+          const sentMessageInfo2: SentMessageInfo = await this.emailService.sendXpConfirmationAdmin(
+            foundUser, newExperience, wine);
+          // check if Nodemailer did complete the request
+          if (sentMessageInfo.accepted.length) {
+            console.log('Se envió correo electrónico de confirmación');
+          } else {
+            console.log('Se produjo un error al enviar el correo electrónico de confirmación');
+          }
+        } catch (err) {
           console.log('Se produjo un error al enviar el correo electrónico de confirmación');
         }
 

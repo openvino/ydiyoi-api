@@ -290,8 +290,9 @@ export class UserController {
     try {
       // Updates the user to store their reset key with error handling
       await this.userRepository.updateById(foundUser.id, foundUser);
-    } catch (e) {
-      return e;
+    } catch (err) {
+      console.log(err);
+      return "error storing reset key"
     }
 
     // Send an email to the user's email address
@@ -344,8 +345,9 @@ export class UserController {
 
       // Update the user removing the reset key
       await this.userRepository.updateById(foundUser.id, foundUser);
-    } catch (e) {
-      return e;
+    } catch (err) {
+      console.log(err);
+      return "error storing reset key"
     }
 
     return 'La solicitud de restablecimiento de contraseña se completó correctamente';
