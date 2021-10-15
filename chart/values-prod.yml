@@ -16,7 +16,7 @@ envs:
   - name: DB_PORT
     value: "5432"
   - name: DB_PASSWORD
-    value: "qA9AiIaJ4O"
+    value: ""
   - name: APPLICATION_URL
     value: "https://nft.openvino.org"
   - name: DB_USER
