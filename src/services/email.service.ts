@@ -6,33 +6,33 @@ import {EmailTemplate, Experience, UserWithRelations, WineWithRelations} from '.
 export class EmailService {
 
   // working with local .ENV variables
-  // private static async setupTransporter() {
-  //   return createTransport({
-  //     host: process.env.SMTP_SERVER,
-  //     port: +process.env.SMTP_PORT!,
-  //     secure: false, //false: upgrade later with STARTTLS - true: using ferozo
-  //     auth: {
-  //       user: process.env.SMTP_USERNAME,
-  //       pass: process.env.SMTP_PASSWORD,
-  //     },
-  //     tls: {
-  //       // do not fail on invalid certs
-  //       rejectUnauthorized: false
-  //     },
-  //     debug: true,
-  //     logger: true
-  //   });
-  // }
-
-  // working with deployed dockerize email server
   private static async setupTransporter() {
     return createTransport({
-      host: 'smtp',
-      port: 25,
+      host: process.env.SMTP_SERVER,
+      port: +process.env.SMTP_PORT!,
+      secure: true, //false: upgrade later with STARTTLS - true: using ferozo
+      auth: {
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD,
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+      },
       debug: true,
       logger: true
     });
   }
+
+  // // working with deployed dockerize email server
+  // private static async setupTransporter() {
+  //   return createTransport({
+  //     host: 'smtp',
+  //     port: 25,
+  //     debug: true,
+  //     logger: true
+  //   });
+  // }
 
   async sendResetPasswordMail(user: UserWithRelations): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
