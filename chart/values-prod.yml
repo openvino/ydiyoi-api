@@ -11,22 +11,11 @@ port: 4000
 envs:
   - name: DB_DATABASE
     value: "ydiyoi"
-  - name: DB_HOST
-    value: '10.245.167.252'
-  - name: DB_PORT
-    value: "5432"
-  - name: DB_PASSWORD
-    value: ""
-  - name: APPLICATION_URL
-    value: "https://nft.openvino.org"
-  - name: DB_USER
-    value: postgres
-
 
 
 image:
   repository: luisvid/ydi-yoi
-  tag: 9
+  tag: 11
   pullPolicy: IfNotPresent
 
 service:
@@ -78,7 +67,7 @@ resources:
 
 # Horizontal Pod Autoscaler
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 3
   maxReplicas: 9
   cpu:
