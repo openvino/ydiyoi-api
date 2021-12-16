@@ -24,7 +24,7 @@ export class EmailService {
     });
   }
 
-  // // working with deployed dockerize email server
+  // working with deployed dockerize email server (docker-compose version)
   // private static async setupTransporter() {
   //   return createTransport({
   //     host: 'smtp',
@@ -34,22 +34,23 @@ export class EmailService {
   //   });
   // }
 
+  // Reset Password Request
   async sendResetPasswordMail(user: UserWithRelations): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: 'mailing@agilmentor.com',
       to: user.email,
-      subject: '[YDI-YOI] Reset Password Reques',
+      subject: '[YDI-YOI] Reset Password Request',
       html: `
       <div>
-        <h2>Estimado/a</h2>
+        <h2>Dear</h2>
         <h2>${user.firstName} ${user.lastName}</h2>
-        <p>Ud. ha solicitado cambio de clave como usuario de la App de OpenVino YDI-YOI.</p>
-        <p>Para modificar debe hacer clic en el siguiente enlace:
-        <a href="${process.env.APPLICATION_URL}/reset-password-finish.html?resetKey=${user.resetKey}">Cambiar contraseña</a>
-        <p>Y a continuación, deberá ingresar los datos que pide la página.</p>
-        <p>Saludos cordiales</p>
-        <p><strong>Cualquier inconveniente puede escribir a este correo.</strong></p>
+        <p>You have requested a password change as a user of the OpenVino App.</p>
+        <p>To modify it you must click on the following link:
+        <a href="${process.env.APPLICATION_URL}/app/update-password?resetKey=${user.resetKey}">change Password</a>
+        <p>Next, you must enter the information requested by the page.</p>
+        <p>Kind regards</p>
+        <p><strong>Any questions you can answer this email.</strong></p>
       </div>
       `,
     });

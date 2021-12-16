@@ -56,6 +56,9 @@ typings/
 
 # dotenv environment variables file
 .env
+chart/values-prod.yml
+docker-compose.yml
+
 
 # Transpiled JavaScript files from Typescript
 /dist
@@ -69,5 +72,4 @@ pgdata
 #uploaded files directory
 .sandbox
 .DS_Store
-chart/values-prod.yml
-docker-compose.yml
+
