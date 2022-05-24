@@ -38,7 +38,7 @@ export class EmailService {
   async sendResetPasswordMail(user: UserWithRelations): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'mailing@agilmentor.com',
+      from: 'team@baas256.com',
       to: user.email,
       subject: '[YDI-YOI] Reset Password Request',
       html: `
@@ -61,7 +61,7 @@ export class EmailService {
   async sendXpConfirmation(user: UserWithRelations, experience: Experience): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'mailing@agilmentor.com',
+      from: 'team@baas256.com',
       to: user.email,
       subject: '[YDI-YOI] New experience confirmation',
       html: `
@@ -88,8 +88,8 @@ export class EmailService {
 
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'mailing@agilmentor.com',
-      to: 'luis@agilmentor.com',
+      from: 'team@baas256.com',
+      to: 'team@baas256.com',
       subject: '[YDI-YOI] A new experience has been registered',
       html: `
       <div>
