@@ -71,7 +71,7 @@ export class EmailService {
       <p>Your experience with our wine has been successfully registered</p>
       <p>Date: ${experience.date}</p>
       <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue}</p>
+      <p>Bottle Identification: ${experience.qrValue?.slice(0, experience.qrValue.length-6)}</p>
       <p>Thanks a lot!</p>
       <p>regards</p>
       </div>
@@ -98,7 +98,7 @@ export class EmailService {
       <p>The data of the registered experience are the following: </p>
       <p>Date: ${experience.date}</p>
       <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue}</p>
+      <p>Bottle Identification: ${experience.qrValue?.slice(0, experience.qrValue.length-6)}</p>
       <p>Wine: ${wine.name}</p>
       <p>Bottle no: ${wine.bottleNo}</p>
       <p>Token: ${wine.tokenSymbol} Valor: ${wine.tokenValue}</p>
