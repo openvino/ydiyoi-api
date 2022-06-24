@@ -1,10 +1,14 @@
 import {bind, BindingScope} from '@loopback/core';
 import {createTransport, SentMessageInfo} from 'nodemailer';
-import {EmailTemplate, Experience, UserWithRelations, WineWithRelations} from '../models';
+import {
+  EmailTemplate,
+  Experience,
+  UserWithRelations,
+  WineWithRelations,
+} from '../models';
 
 @bind({scope: BindingScope.TRANSIENT})
 export class EmailService {
-
   // working with local .ENV variables
   private static async setupTransporter() {
     return createTransport({
@@ -17,10 +21,10 @@ export class EmailService {
       },
       tls: {
         // do not fail on invalid certs
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
       },
       debug: true,
-      logger: true
+      logger: true,
     });
   }
 
@@ -35,7 +39,9 @@ export class EmailService {
   // }
 
   // Reset Password Request
-  async sendResetPasswordMail(user: UserWithRelations): Promise<SentMessageInfo> {
+  async sendResetPasswordMail(
+    user: UserWithRelations,
+  ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: 'team@baas256.com',
@@ -47,7 +53,7 @@ export class EmailService {
         <h2>${user.firstName} ${user.lastName}</h2>
         <p>You have requested a password change as a user of the OpenVino App.</p>
         <p>To modify it you must click on the following link:
-        <a href="${process.env.APPLICATION_URL}/app/update-password?resetKey=${user.resetKey}">change Password</a>
+        <a href="nft.openvino.org/app/update-password?resetKey=${user.resetKey}">change Password</a>
         <p>Next, you must enter the information requested by the page.</p>
         <p>Kind regards</p>
         <p><strong>Any questions you can answer this email.</strong></p>
@@ -58,7 +64,10 @@ export class EmailService {
   }
 
   // Experience confirmation email to user
-  async sendXpConfirmation(user: UserWithRelations, experience: Experience): Promise<SentMessageInfo> {
+  async sendXpConfirmation(
+    user: UserWithRelations,
+    experience: Experience,
+  ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: 'team@baas256.com',
@@ -71,7 +80,10 @@ export class EmailService {
       <p>Your experience with our wine has been successfully registered</p>
       <p>Date: ${experience.date}</p>
       <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue?.slice(0, experience.qrValue.length-6)}</p>
+      <p>Bottle Identification: ${experience.qrValue?.slice(
+        0,
+        experience.qrValue.length - 6,
+      )}</p>
       <p>Thanks a lot!</p>
       <p>regards</p>
       </div>
@@ -84,8 +96,8 @@ export class EmailService {
   async sendXpConfirmationAdmin(
     user: UserWithRelations,
     experience: Experience,
-    wine: WineWithRelations): Promise<SentMessageInfo> {
-
+    wine: WineWithRelations,
+  ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: 'team@baas256.com',
@@ -98,7 +110,10 @@ export class EmailService {
       <p>The data of the registered experience are the following: </p>
       <p>Date: ${experience.date}</p>
       <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue?.slice(0, experience.qrValue.length-6)}</p>
+      <p>Bottle Identification: ${experience.qrValue?.slice(
+        0,
+        experience.qrValue.length - 6,
+      )}</p>
       <p>Wine: ${wine.name}</p>
       <p>Bottle no: ${wine.bottleNo}</p>
       <p>Token: ${wine.tokenSymbol} Valor: ${wine.tokenValue}</p>
@@ -108,5 +123,4 @@ export class EmailService {
     });
     return transporter.sendMail(emailTemplate);
   }
-
 }
