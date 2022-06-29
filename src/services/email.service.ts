@@ -101,7 +101,7 @@ export class EmailService {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: 'team@baas256.com',
-      to: 'team@baas256.com',
+      to: 'mtb@costaflores.com',
       subject: '[YDI-YOI] A new experience has been registered',
       html: `
       <div>
