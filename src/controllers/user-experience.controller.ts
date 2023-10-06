@@ -6,7 +6,7 @@ import {
   Filter,
   FilterBuilder,
   repository,
-  Where
+  Where,
 } from '@loopback/repository';
 import {
   del,
@@ -16,12 +16,10 @@ import {
   param,
   patch,
   post,
-  requestBody
+  requestBody,
 } from '@loopback/rest';
 import {TokenServiceBindings} from '../keys';
-import {
-  Experience, User
-} from '../models';
+import {Experience, User} from '../models';
 import {ExperienceRepository, UserRepository} from '../repositories';
 import {JWTService} from '../services/jwt-service';
 
@@ -35,10 +33,9 @@ export class UserExperienceController {
 
     @inject(TokenServiceBindings.TOKEN_SERVICE)
     public jwtService: JWTService,
+  ) {}
 
-  ) { }
-
-  @authenticate("jwt")
+  @authenticate('jwt')
   @get('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -58,7 +55,7 @@ export class UserExperienceController {
     return this.userRepository.experiences(id).find(filter);
   }
 
-  @authenticate("jwt")
+  @authenticate('jwt')
   @post('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -75,16 +72,17 @@ export class UserExperienceController {
           schema: getModelSchemaRef(Experience, {
             title: 'NewExperienceInUser',
             exclude: ['id'],
-            optional: ['userId']
+            optional: ['userId'],
           }),
         },
       },
-    }) experience: Omit<Experience, 'id'>,
+    })
+    experience: Omit<Experience, 'id'>,
   ): Promise<Experience> {
     return this.userRepository.experiences(id).create(experience);
   }
 
-  @authenticate("jwt")
+  @authenticate('jwt')
   @patch('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -103,12 +101,13 @@ export class UserExperienceController {
       },
     })
     experience: Partial<Experience>,
-    @param.query.object('where', getWhereSchemaFor(Experience)) where?: Where<Experience>,
+    @param.query.object('where', getWhereSchemaFor(Experience))
+    where?: Where<Experience>,
   ): Promise<Count> {
     return this.userRepository.experiences(id).patch(experience, where);
   }
 
-  @authenticate("jwt")
+  @authenticate('jwt')
   @del('/users/{id}/experiences', {
     responses: {
       '200': {
@@ -119,13 +118,14 @@ export class UserExperienceController {
   })
   async delete(
     @param.path.number('id') id: number,
-    @param.query.object('where', getWhereSchemaFor(Experience)) where?: Where<Experience>,
+    @param.query.object('where', getWhereSchemaFor(Experience))
+    where?: Where<Experience>,
   ): Promise<Count> {
     return this.userRepository.experiences(id).delete(where);
   }
 
   // Array of Experience detail
-  @authenticate("jwt")
+  @authenticate('jwt')
   @get('/users/{id}/experiencesdetail', {
     responses: {
       '200': {
@@ -138,21 +138,30 @@ export class UserExperienceController {
       },
     },
   })
-  async findDetail(
-    @param.path.number('id') id: number,
-  ): Promise<Experience[]> {
+  async findDetail(@param.path.number('id') id: number): Promise<Experience[]> {
     const filterBuilder = new FilterBuilder<Experience>();
     const filter = filterBuilder
-      .fields('id', 'date', 'location', 'ipfsUrl', 'nftGenerated', 'statusId')
-      .include({
-        relation: 'wine', scope: {
-          fields: ['experienceId', 'id', 'name', 'qrValue']
-        }
-      }, {relation: 'experienceSurvey'})
+      .fields(
+        'id',
+        'date',
+        'location',
+        'ipfsUrl',
+        'nftGenerated',
+        'statusId',
+        'photoFileName',
+      )
+      .include(
+        {
+          relation: 'wine',
+          scope: {
+            fields: ['experienceId', 'id', 'name', 'qrValue'],
+          },
+        },
+        {relation: 'experienceSurvey'},
+      )
       .where({userId: id})
       .build();
 
     return this.experienceRepository.find(filter);
-
   }
 }
