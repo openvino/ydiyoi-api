@@ -198,11 +198,25 @@ export class UserController {
       }
     }
   })
-  async signup(@requestBody() userData: User) {
+  async signup(@requestBody() userData: User): Promise<User> {
+    // Validar las credenciales del usuario (como el formato del email y la longitud de la contraseña)
     validateCredentials(_.pick(userData, ['email', 'password']));
-    userData.password = await this.hasher.hashPassword(userData.password)
+
+    // Verificar si ya existe un usuario con el mismo correo electrónico
+    const existingUser = await this.userRepository.findOne({
+      where: {email: userData.email},
+    });
+
+    if (existingUser) {
+      throw new HttpErrors.Conflict('El correo electrónico ya está registrado.');
+    }
+
+    // Si no existe un usuario con ese email, proceder a crear el nuevo usuario
+    userData.password = await this.hasher.hashPassword(userData.password);
     const savedUser = await this.userRepository.create(userData);
-    //delete savedUser.password;
+
+    // Omitir la contraseña antes de devolver el usuario creado
+    // delete savedUser.password;
     return savedUser;
   }
 
