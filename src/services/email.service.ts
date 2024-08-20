@@ -44,7 +44,7 @@ export class EmailService {
   ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'team@baas256.com',
+      from: '"Openvino" <redeem@openvino.org>',
       to: user.email,
       subject: '[YDI-YOI] Reset Password Request',
       html: `
@@ -70,7 +70,7 @@ export class EmailService {
   ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'team@baas256.com',
+      from: '"Openvino" <redeem@openvino.org>',
       to: user.email,
       subject: '[YDI-YOI] New experience confirmation',
       html: `
@@ -100,7 +100,7 @@ export class EmailService {
   ): Promise<SentMessageInfo> {
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: 'team@baas256.com',
+      from: '"Openvino" <redeem@openvino.org>',
       to: 'mtb@costaflores.com',
       subject: '[YDI-YOI] A new experience has been registered',
       html: `
