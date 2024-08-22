@@ -72,21 +72,45 @@ export class EmailService {
     const emailTemplate = new EmailTemplate({
       from: '"Openvino" <redeem@openvino.org>',
       to: user.email,
-      subject: '[YDI-YOI] New experience confirmation',
+      subject: '[YDI-YOI] New wine drinking experience',
       html: `
-      <div>
-      <h2>Dear</h2>
-      <h2>${user.firstName} ${user.lastName}</h2>
-      <p>Your experience with our wine has been successfully registered</p>
-      <p>Date: ${experience.date}</p>
-      <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue?.slice(
-        0,
-        experience.qrValue.length - 6,
-      )}</p>
-      <p>Thanks a lot!</p>
-      <p>regards</p>
-      </div>
+     <div
+    style="font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #FFFFFF; padding: 20px; background-color: #850d4a; border: 1px solid #DDDDDD; border-radius: 10px; max-width: 600px; margin: auto; text-align: center;">
+    <img style="width: 300px; margin: 0 auto 20px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
+
+    <h2 style="color: #FFFFFF; margin-bottom: 20px;">Welcome to OpenVino, ${user.email}</h2>
+
+    <p style="color: #FFFFFF; font-size: 16px; line-height: 1.7; margin-bottom: 20px;">Thank you for sharing your wine drinking experience with us.</p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 10px;">Date:
+        <span style="color: #DDDDDD; font-weight: normal;">${experience.date}</span>
+    </p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 30px;">Bottle Identification:
+        <span style="color: #DDDDDD; font-weight: normal;">${experience.qrValue?.slice(0, experience.qrValue.length - 6)}</span>
+    </p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 30px;">You Drink It, You Own It</p>
+
+    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px;">
+        <div style="text-align: center;">
+            <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 20px;">Find out more at:</p>
+            <a href="https://openvino.org" target="_blank"
+            style="text-decoration: none; padding: 12px 30px; font-weight: bold;  background-color: #ffffff; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #850d4a; cursor: pointer; border: 2px solid #850d4a;">
+            OpenVino.org
+        </a>
+        </div>
+        <div style="text-align: center;">
+            <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 20px;">And if you want :</p>
+            <a href="https://openvino.exchange/costaflores" target="_blank"
+                style="text-decoration: none; padding: 12px 30px; font-weight: bold;  background-color: #d5841b; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b;">
+                More🍷
+            </a>
+        </div>
+    </div>
+</div>
+
+
       `,
     });
     return transporter.sendMail(emailTemplate);
@@ -102,23 +126,44 @@ export class EmailService {
     const emailTemplate = new EmailTemplate({
       from: '"Openvino" <redeem@openvino.org>',
       to: 'mtb@costaflores.com',
-      subject: '[YDI-YOI] A new experience has been registered',
+      subject: '[YDI-YOI] A new wine drinking experience has been registered',
       html: `
-      <div>
-      <h2>A new experience has been registered by the user: </h2>
-      <h2>${user.firstName} ${user.lastName}</h2>
-      <p>The data of the registered experience are the following: </p>
-      <p>Date: ${experience.date}</p>
-      <p>Location: ${experience.location}</p>
-      <p>Bottle Identification: ${experience.qrValue?.slice(
-        0,
-        experience.qrValue.length - 6,
-      )}</p>
-      <p>Wine: ${wine.name}</p>
-      <p>Bottle no: ${wine.bottleNo}</p>
-      <p>Token: ${wine.tokenSymbol} Valor: ${wine.tokenValue}</p>
-      <p>regards</p>
-      </div>
+      <div
+    style="font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #FFFFFF; padding: 20px; background-color: #850d4a; border: 1px solid #DDDDDD; border-radius: 10px; max-width: 600px; margin: auto; text-align: center;">
+    <img style="width: 300px; margin: 0 auto 20px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
+
+    <h2 style="color: #FFFFFF; margin-bottom: 20px;">Welcome to OpenVino, ${user.email}</h2>
+
+    <p style="color: #FFFFFF; font-size: 16px; line-height: 1.7; margin-bottom: 20px;">Thank you for sharing your wine drinking experience with us.</p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 10px;">Date:
+        <span style="color: #DDDDDD; font-weight: normal;">${experience.date}</span>
+    </p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 30px;">Bottle Identification:
+        <span style="color: #DDDDDD; font-weight: normal;">${experience.qrValue?.slice(0, experience.qrValue.length - 6)}</span>
+    </p>
+
+    <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 30px;">You Drink It, You Own It</p>
+
+    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px;">
+        <div style="text-align: center;">
+            <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 20px;">Find out more at:</p>
+            <a href="https://openvino.org" target="_blank"
+            style="text-decoration: none; padding: 12px 30px; font-weight: bold;  background-color: #ffffff; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #850d4a; cursor: pointer; border: 2px solid #850d4a;">
+            OpenVino.org
+        </a>
+        </div>
+        <div style="text-align: center;">
+            <p style="color: #FFFFFF; font-size: 16px; font-weight: bold; margin-bottom: 20px;">And if you want :</p>
+            <a href="https://openvino.exchange/costaflores" target="_blank"
+                style="text-decoration: none; padding: 12px 30px; font-weight: bold;  background-color: #d5841b; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b;">
+                More🍷
+            </a>
+        </div>
+    </div>
+</div>
+
       `,
     });
     return transporter.sendMail(emailTemplate);
