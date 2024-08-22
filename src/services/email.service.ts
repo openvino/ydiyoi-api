@@ -89,36 +89,36 @@ export class EmailService {
       html: `
      <div
     style="font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #FFFFFF; padding: 15px; background-color: #850d4a; border: 1px solid #DDDDDD; border-radius: 10px; max-width: 100%; margin: auto; text-align: center;">
-    <img style="width: 80%; max-width: 300px; margin: 0 auto 20px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
+    <img style="width: 50%; max-width: 250px; margin: 0 auto 20px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
 
-    <h2 style="color: #FFFFFF; margin-bottom: 20px; font-size: 1.5rem;">You Drink It, You Own It</h2>
+    <h2 style="color: #FFFFFF; margin-bottom: 20px; font-size: 1rem;">You Drink It, You Own It</h2>
 
-    <h3 style="font-size: 1.2rem;">${user.email}</h3>
+    <h3 style="font-size: 1rem;">${user.email}</h3>
 
-    <p style="color: #FFFFFF; font-size: 1rem; line-height: 1.7; margin-bottom: 20px;">Thank you for sharing your wine drinking experience with us.</p>
+    <p style="color: #FFFFFF; font-size: 0.8rem; line-height: 1.7; margin-bottom: 20px;">Thank you for sharing your wine drinking experience with us.</p>
 
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 10px;">Date:
+    <p style="color: #FFFFFF; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;">Date:
         <span style="color: #DDDDDD; font-weight: normal;">${formattedDate}</span>
     </p>
 
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 30px;">Bottle Identification:
+    <p style="color: #FFFFFF; font-size: 0.8rem; font-weight: bold; margin-bottom: 30px;">Bottle Identification:
         <span style="color: #DDDDDD; font-weight: normal;">${experience.qrValue?.slice(0, experience.qrValue.length - 6)}</span>
     </p>
 
-    <p style="color: #FFFFFF; font-size: 1.2rem; font-weight: bold; margin-bottom: 30px;">Welcome to OpenVino</p>
+    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin: 0; ">Welcome to OpenVino</p>
 
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 30px;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 20px;">
         <div style="width: 100%; text-align: center;">
-            <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 20px;">Find out more at:</p>
+            <p style="color: #FFFFFF; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px;">Find out more at:</p>
             <a href="https://openvino.org" target="_blank"
-                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #ffffff; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #850d4a; cursor: pointer; border: 2px solid #850d4a; border-radius: 5px;">
+                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #ffffff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #850d4a; cursor: pointer; border: 2px solid #850d4a; border-radius: 5px;">
                 OpenVino.org
             </a>
         </div>
         <div style="width: 100%; text-align: center;">
-            <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 20px;">And if you want:</p>
+            <p style="color: #FFFFFF; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px;">And if you want:</p>
             <a href="https://openvino.exchange/costaflores" target="_blank"
-                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #d5841b; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b; border-radius: 5px;">
+                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #d5841b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b; border-radius: 5px;">
                 More🍷
             </a>
         </div>
