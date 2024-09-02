@@ -53,7 +53,7 @@ export class EmailService {
         <h2>${user.firstName} ${user.lastName}</h2>
         <p>You have requested a password change as a user of the OpenVino App.</p>
         <p>To modify it you must click on the following link:
-        <a href="nft.openvino.org/app/update-password?resetKey=${user.resetKey}">change Password</a>
+        <a href="nft.openvino.org/?resetKey=${user.resetKey}">change Password</a>
         <p>Next, you must enter the information requested by the page.</p>
         <p>Kind regards</p>
         <p><strong>Any questions you can answer this email.</strong></p>
@@ -210,5 +210,5 @@ export class EmailService {
   }
 
 
-  
+
 }
