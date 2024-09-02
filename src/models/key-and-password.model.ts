@@ -12,15 +12,20 @@ export class KeyAndPassword extends Entity {
   })
   resetKey: string;
 
-  @property.apply({
+  @property({
     type: 'string',
   })
   password: string;
 
-  @property.apply({
+  @property({
     type: 'string',
   })
   confirmPassword: string;
+
+  @property({
+    type: 'string',
+  })
+  walletAddress: string; // Corregir la propiedad 'walletadress' a 'walletAddress'
 
   constructor(data?: Partial<KeyAndPassword>) {
     super(data);

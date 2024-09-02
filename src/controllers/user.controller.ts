@@ -199,10 +199,8 @@ export class UserController {
     }
   })
   async signup(@requestBody() userData: User): Promise<User> {
-    // Validar las credenciales del usuario (como el formato del email y la longitud de la contraseña)
     validateCredentials(_.pick(userData, ['email', 'password']));
 
-    // Verificar si ya existe un usuario con el mismo correo electrónico
     const existingUser = await this.userRepository.findOne({
       where: {email: userData.email},
     });
@@ -211,12 +209,11 @@ export class UserController {
       throw new HttpErrors.Conflict('El correo electrónico ya está registrado.');
     }
 
-    // Si no existe un usuario con ese email, proceder a crear el nuevo usuario
+
     userData.password = await this.hasher.hashPassword(userData.password);
     const savedUser = await this.userRepository.create(userData);
 
-    // Omitir la contraseña antes de devolver el usuario creado
-    // delete savedUser.password;
+
     return savedUser;
   }
 
@@ -330,7 +327,7 @@ export class UserController {
     @requestBody() keyAndPassword: KeyAndPassword,
   ): Promise<string> {
     // Checks whether password and reset key meet minimum security requirements
-    const {resetKey, password} = await this.validateKeyPassword(keyAndPassword);
+    const {resetKey, password, walletAddress} = await this.validateKeyPassword(keyAndPassword);
 
     // Search for a user using reset key
     const foundUser = await this.userRepository.findOne({
@@ -356,7 +353,7 @@ export class UserController {
       foundUser.password = passwordHash;
       // Remove reset key from database its no longer valid
       foundUser.resetKey = '';
-
+      foundUser.walletAddress = walletAddress;
       // Update the user removing the reset key
       await this.userRepository.updateById(foundUser.id, foundUser);
     } catch (err) {
