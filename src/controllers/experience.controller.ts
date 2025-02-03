@@ -105,16 +105,12 @@ export class ExperienceController {
           //send confirmation email to user and admin
           //find user
           const foundUser = await this.userRepository.findById(currentUser.id)
-          const sentMessageInfo: SentMessageInfo = await this.emailService.sendXpConfirmation(
+
+          const sentMessageInfo: SentMessageInfo = this.emailService.sendXpConfirmation(
             foundUser, newExperience);
-          const sentMessageInfo2: SentMessageInfo = await this.emailService.sendXpConfirmationAdmin(
-            foundUser, newExperience, wine);
-          // check if Nodemailer did complete the request
-          if (sentMessageInfo.accepted.length) {
-            console.log('Se envió correo electrónico de confirmación');
-          } else {
-            console.log('Se produjo un error al enviar el correo electrónico de confirmación');
-          }
+          // const sentMessageInfo2: SentMessageInfo = this.emailService.sendXpConfirmationAdmin(
+          //   foundUser, newExperience, wine);
+
         } catch (err) {
           console.log('Se produjo un error al enviar el correo electrónico de confirmación');
         }
