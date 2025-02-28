@@ -115,53 +115,7 @@ export class EmailService {
       from: '"Openvino" <redeem@openvino.org>',
       to: 'mtb@costaflores.com',
       subject: '[YDI-YOI] A new wine drinking experience has been registered',
-      html: `
-      <div
-    style="font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #FFFFFF; padding: 15px; background-color: #850d4a; border: 1px solid #DDDDDD; border-radius: 10px; max-width: 100%; margin: auto; text-align: center;">
-    <img style="width: 80%; max-width: 300px; margin: 0 auto 20px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
-
-    <h2 style="color: #FFFFFF; margin-bottom: 20px; font-size: 1.5rem;">New Drinking Experience</h2>
-
-    <p style="color: #FFFFFF; font-size: 1rem; line-height: 1.7; margin-bottom: 20px;">A user has shared a new wine drinking experience.</p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 10px;">User Email:
-        <span style="color: #DDDDDD; font-weight: normal;">${user.email}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 10px;">Date:
-        <span style="color: #DDDDDD; font-weight: normal;">${formattedDate}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 10px;">Bottle Identification:
-        <span style="color: #DDDDDD; font-weight: normal;">${experience.qrValue?.slice(0, experience.qrValue.length - 6)}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 10px;">Wine:
-        <span style="color: #DDDDDD; font-weight: normal;">${wine.name}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 30px;">Bottle Number:
-        <span style="color: #DDDDDD; font-weight: normal;">${wine.bottleNo}</span>
-    </p>
-
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 30px;">
-        <div style="width: 100%; text-align: center;">
-            <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 20px;">Check User's Profile:</p>
-            <a href="https://openvino.org/user/${user.id}" target="_blank"
-                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #ffffff; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #850d4a; cursor: pointer; border: 2px solid #850d4a; border-radius: 5px;">
-                User Profile
-            </a>
-        </div>
-        <div style="width: 100%; text-align: center;">
-            <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin-bottom: 20px;">View Experience Details:</p>
-            <a href="https://openvino.exchange/experience/${experience.id}" target="_blank"
-                style="text-decoration: none; padding: 12px 5%; font-weight: bold; background-color: #d5841b; font-size: 1rem; text-transform: uppercase; letter-spacing: .88px; text-align: center; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b; border-radius: 5px;">
-                Experience Details
-            </a>
-        </div>
-    </div>
-</div>
-      `,
+      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6), formattedDate),
     });
     return transporter.sendMail(emailTemplate);
   }
