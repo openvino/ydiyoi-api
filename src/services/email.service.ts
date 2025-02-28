@@ -87,7 +87,7 @@ export class EmailService {
       from: '"Openvino" <redeem@openvino.org>',
       to: user.email,
       subject: '[YDI-YOI] New wine drinking experience',
-      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6)),
+      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6), formattedDate),
     });
     return transporter.sendMail(emailTemplate);
   }
