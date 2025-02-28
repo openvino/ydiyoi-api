@@ -6,6 +6,7 @@ import {
   UserWithRelations,
   WineWithRelations,
 } from '../models';
+import {getEmailTemplate} from './email/emails.template';
 
 @bind({scope: BindingScope.TRANSIENT})
 export class EmailService {
@@ -86,51 +87,7 @@ export class EmailService {
       from: '"Openvino" <redeem@openvino.org>',
       to: user.email,
       subject: '[YDI-YOI] New wine drinking experience',
-      html: `
-    <div
-    style="font-family: 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: #FFFFFF; padding: 15px; background-color: #850d4a; border-radius: 10px; max-width: 100%; margin: auto; text-align: center;">
-    <img style="width: 50%; max-width: 250px; margin: 0 auto 15px; display: block;" src="https://openvino.exchange/assets/images/openvino-logo.png" alt="OpenVino Logo">
-
-    <h2 style="color: #FFFFFF; margin-bottom: 15px; font-size: 1rem;">You Drink It, You Own It</h2>
-
-    <h3 style="font-size: 1rem; margin-bottom: 10px;">${user.email}</h3>
-
-    <p style="color: #FFFFFF; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Thank you for sharing your wine drinking experience with us.</p>
-
-    <p style="color: #FFFFFF; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">Date:
-        <span style="color: #DDDDDD; font-weight: normal;">${formattedDate}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 0.9rem; font-weight: bold; margin-bottom: 20px;">Bottle Identification:
-        <span style="color: #DDDDDD; font-weight: normal;">${experience.qrValue?.slice(0, experience.qrValue.length - 6)}</span>
-    </p>
-
-    <p style="color: #FFFFFF; font-size: 1rem; font-weight: bold; margin: 0 0 15px 0;">Welcome to OpenVino</p>
-
-    <table style="width: 100%; text-align: center;">
-        <tr>
-            <td style="padding-bottom: 10px;">
-                <p style="color: #FFFFFF; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">Find out more at:</p>
-                <a href="https://openvino.org" target="_blank"
-                    style="display: inline-block; padding: 10px 15px; font-weight: bold; background-color: #ffffff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: .88px; color: #850d4a; cursor: pointer; border: 2px solid #850d4a; border-radius: 5px; text-decoration: none;">
-                    OpenVino.org
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding-top: 10px;">
-                <p style="color: #FFFFFF; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px;">And if you want:</p>
-                <a href="https://openvino.exchange/costaflores" target="_blank"
-                    style="display: inline-block; padding: 10px 15px; font-weight: bold; background-color: #d5841b; font-size: 0.9rem; text-transform: uppercase; letter-spacing: .88px; color: #FFFFFF; cursor: pointer; border: 2px solid #d5841b; border-radius: 5px; text-decoration: none;">
-                    More🍷
-                </a>
-            </td>
-        </tr>
-    </table>
-</div>
-
-
-      `,
+      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6)),
     });
     return transporter.sendMail(emailTemplate);
   }
