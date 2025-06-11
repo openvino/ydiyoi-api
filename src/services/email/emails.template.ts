@@ -1,4 +1,9 @@
-export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmail = 'info@costaflores.com') {
+export function getEmailTemplate(
+  email: string,
+  bottle: any,
+  date: any,
+  wineryEmail = 'info@costaflores.com',
+) {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   dir="ltr"
@@ -460,7 +465,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       class="bg c i"
                                       style="
                                         margin: 0;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         mso-line-height-rule: exactly;
@@ -483,7 +488,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       style="
                                         font-size: 14px !important;
                                         color: #141b24;
-                                        font-family: 'open sans';
+                                        font-family: 'Open Sans';
                                         text-align: center;
                                       "
                                     >
@@ -510,7 +515,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       style="
                                         margin: 0;
                                         mso-line-height-rule: exactly;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         line-height: 25px;
@@ -596,7 +601,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       class="bg e"
                                       style="
                                         margin: 0;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         mso-line-height-rule: exactly;
@@ -720,7 +725,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       class="bg e"
                                       style="
                                         margin: 0;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         mso-line-height-rule: exactly;
@@ -906,7 +911,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       class="bg e"
                                       style="
                                         margin: 0;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         mso-line-height-rule: exactly;
@@ -1072,7 +1077,7 @@ export function getEmailTemplate(email: string, bottle: any,date:any, wineryEmai
                                       class="bg e"
                                       style="
                                         margin: 0;
-                                        font-family: 'open sans',
+                                        font-family: 'Open Sans',
                                           'helvetica neue', helvetica, arial,
                                           sans-serif;
                                         mso-line-height-rule: exactly;
