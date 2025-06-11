@@ -79,15 +79,19 @@ export class EmailService {
       hour: '2-digit', // 14
       minute: '2-digit', // 18
       hour12: false, // 24-hour clock
-      timeZoneName: 'short' // GMT
+      timeZoneName: 'short', // GMT
     });
 
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
-      from: '"Openvino" <redeem@openvino.org>',
+      from: '"Openvino" <nft@openvino.org>',
       to: user.email,
-      subject: '[YDI-YOI] New wine drinking experience',
-      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6), formattedDate),
+      subject: 'You Drink It, You Own It - Thank You!🍷',
+      html: getEmailTemplate(
+        user.email,
+        experience.qrValue?.slice(0, experience.qrValue.length - 6),
+        formattedDate,
+      ),
     });
     return transporter.sendMail(emailTemplate);
   }
@@ -108,18 +112,19 @@ export class EmailService {
       hour: '2-digit', // 14
       minute: '2-digit', // 18
       hour12: false, // 24-hour clock
-      timeZoneName: 'short' // GMT
+      timeZoneName: 'short', // GMT
     });
     const transporter = await EmailService.setupTransporter();
     const emailTemplate = new EmailTemplate({
       from: '"Openvino" <redeem@openvino.org>',
       to: 'mtb@costaflores.com',
       subject: '[YDI-YOI] A new wine drinking experience has been registered',
-      html: getEmailTemplate(user.email, experience.qrValue?.slice(0, experience.qrValue.length - 6), formattedDate),
+      html: getEmailTemplate(
+        user.email,
+        experience.qrValue?.slice(0, experience.qrValue.length - 6),
+        formattedDate,
+      ),
     });
     return transporter.sendMail(emailTemplate);
   }
-
-
-
 }
