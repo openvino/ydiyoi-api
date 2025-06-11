@@ -488,7 +488,7 @@ export function getEmailTemplate(
                                       style="
                                         font-size: 14px !important;
                                         color: #141b24;
-                                        font-family: 'Open Sans';
+                                        font-family: 'Open Sans','helvetica neue',helvetica,arial,sans-serif;
                                         text-align: center;
                                       "
                                     >
