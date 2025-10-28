@@ -49,16 +49,87 @@ export class EmailService {
       to: user.email,
       subject: '[YDI-YOI] Reset Password Request',
       html: `
-      <div>
-        <h2>Dear</h2>
-        <h2>${user.firstName} ${user.lastName}</h2>
-        <p>You have requested a password change as a user of the OpenVino App.</p>
-        <p>To modify it you must click on the following link:
-        <a href="nft.openvino.org/?resetKey=${user.resetKey}">change Password</a>
-        <p>Next, you must enter the information requested by the page.</p>
-        <p>Kind regards</p>
-        <p><strong>Any questions you can answer this email.</strong></p>
+      <div
+  style="
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: #f9f6f7;
+    padding: 40px 20px;
+  "
+>
+  <div
+    style="
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      border-top: 6px solid #840b4a;
+    "
+  >
+    <div style="padding: 40px">
+      <h2 style="color: #840b4a; margin-bottom: 0">
+        Hello ${user.firstName} ${user.lastName},
+      </h2>
+      <p
+        style="font-size: 15px; color: #333; margin-top: 12px; line-height: 1.6"
+      >
+        You have requested to <strong>update your wallet address</strong> in
+        your OpenVino account.
+      </p>
+
+      <p
+        style="font-size: 15px; color: #333; margin-top: 8px; line-height: 1.6"
+      >
+        To complete the process securely, please click the button below:
+      </p>
+
+      <div style="text-align: center; margin: 30px 0">
+        <a
+          href="https://nft.openvino.org/?resetKey=${user.resetKey}"
+          style="
+            display: inline-block;
+            background-color: #840b4a;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+          "
+        >
+          Change Wallet
+        </a>
       </div>
+
+      <p style="font-size: 14px; color: #666; line-height: 1.6">
+        After clicking the link, you’ll be redirected to OpenVino where you can
+        confirm and update your wallet address.
+      </p>
+
+      <p style="font-size: 14px; color: #666">
+        If you didn’t request this change, please ignore this email.
+      </p>
+
+      <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0" />
+
+      <p style="font-size: 13px; color: #999">
+        Kind regards,<br />
+        <strong style="color: #840b4a">OpenVino Team</strong><br />
+        <a
+          href="https://openvino.org"
+          style="color: #840b4a; text-decoration: none"
+          >openvino.org</a
+        >
+      </p>
+
+      <p style="font-size: 12px; color: #bbb; margin-top: 12px">
+        You can reply directly to this email if you have any questions.
+      </p>
+    </div>
+  </div>
+</div>
+
       `,
     });
     return transporter.sendMail(emailTemplate);
