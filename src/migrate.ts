@@ -1,4 +1,5 @@
 import {YdiYoiApplication} from './application';
+import {dropLegacyWineConstraints} from './utils/schema-migration';
 
 export async function migrate(args: string[]) {
   const existingSchema = args.includes('--rebuild') ? 'drop' : 'alter';
@@ -6,6 +7,7 @@ export async function migrate(args: string[]) {
 
   const app = new YdiYoiApplication();
   await app.boot();
+  await dropLegacyWineConstraints(app);
 
   await app.migrateSchema({
     existingSchema,

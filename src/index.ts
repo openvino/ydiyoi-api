@@ -1,4 +1,5 @@
 import {ApplicationConfig, YdiYoiApplication} from './application';
+import {dropLegacyWineConstraints} from './utils/schema-migration';
 
 export * from './application';
 
@@ -19,6 +20,7 @@ export async function main(options: ApplicationConfig = {}) {
 
   await app.boot();
   // migrate BD en every start
+  await dropLegacyWineConstraints(app);
   await app.migrateSchema();
   await app.start();
 
