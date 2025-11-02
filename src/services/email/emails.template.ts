@@ -623,11 +623,61 @@ export function getEmailTemplate(
                                   <td
                                     align="center"
                                     class="bw by bv bx"
+                                    style="padding: 0; "
+                                  >
+                                    <span
+                                      class="bd"
+                                      style="
+
+                                        border-style: solid;
+                                        border-color: #0c66ff;
+                                        background: #840c4a;
+                                        border-width: 0;
+                                        display: inline-block;
+                                        border-radius: 20px;
+                                        width: auto;
+                                      "
+                                      ><a
+                                        href="https://openvino.exchange"
+                                        target="_blank"
+                                        class="m"
+                                        style="
+                                          mso-style-priority: 100 !important;
+                                          text-decoration: none !important;
+                                          mso-line-height-rule: exactly;
+                                          color: #ffffff;
+                                          font-size: 14px;
+                                          padding: 10px 30px;
+                                          display: inline-block;
+                                          background: #840c4a;
+                                          border-radius: 20px;
+                                          font-family: 'Open Sans', sans-serif;
+                                          font-weight: bold;
+                                          font-style: normal;
+                                          line-height: 16.8px;
+                                          width: auto;
+                                          text-align: center;
+                                          letter-spacing: 0;
+                                          mso-padding-alt: 0;
+                                          mso-border-alt: 10px solid #840c4a;
+
+                                        "
+                                        >More wine 🍷</a
+                                      ></span
+                                    >
+                                  </td>
+                                </tr>
+
+                                <tr style="border-collapse: collapse; ">
+                                  <td
+                                    align="center"
+                                    class="bw by bv bx"
                                     style="padding: 0;   "
                                   >
                                     <span
                                       class="bd"
                                       style="
+                                       margin-top: 10px;
                                         border-style: solid;
                                         border-color: #0c66ff;
                                         background: #840c4a;
@@ -666,6 +716,8 @@ export function getEmailTemplate(
                                     >
                                   </td>
                                 </tr>
+
+
                               </table>
                             </td>
                           </tr>
@@ -1443,6 +1495,5 @@ export function getEmailTemplate(
       </table>
     </div>
   </body>
-</html>
-`;
+</html>`;
 }
